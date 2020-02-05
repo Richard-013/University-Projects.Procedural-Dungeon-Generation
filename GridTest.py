@@ -32,12 +32,26 @@ def drawGrid(displayScreen, xSize, ySize):
             # Draw cell
             pygame.draw.rect(displayScreen, (255, 255, 255), [x, y, CELL_HEIGHT, CELL_WIDTH])
 
+def makeGridList(xSize, ySize):
+    '''Generates a 2D array/list to store data for the displayed grid
+       xSize - integer size of the grid in the x-direction
+       ySize - integer size of the grid in the y-direction'''
+    gridList = []
+    for row in range(0, ySize):
+        gridList.append([])
+        for column in range(0, xSize):
+            cellLoc = str(row) + ", " + str(column)
+            gridList[row].append(cellLoc)
+
+    return gridList
+
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode(WIN_SIZE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     drawGrid(screen, 10, 10)
+    grid = makeGridList(10, 10)
 
     for i in range(0, 100):
         pygame.display.update()
