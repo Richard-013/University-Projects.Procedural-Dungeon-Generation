@@ -9,6 +9,7 @@ CELL_HEIGHT = 20
 CELL_MARGIN = 5
 
 class TestGrid:
+    '''Grid class to hold functions and data whilst testing'''
     def __init__(self, xSize, ySize, displayScreen):
         self.xSize = xSize
         self.ySize = ySize
