@@ -24,8 +24,16 @@ class TestGrid:
         for row in range(0, self.ySize):
             grid.append([])
             for column in range(0, self.xSize):
-                cellLoc = str(row) + ", " + str(column)
-                grid[row].append(cellLoc)
+                #cellLoc = str(row) + ", " + str(column)
+                if (column % 5) == 0 and (row % 5) == 0:
+                    cellFill = 2
+                elif (column % 5) == 0:
+                    cellFill = 1
+                elif (row % 5) == 0:
+                    cellFill = 1
+                else:
+                    cellFill = 0
+                grid[row].append(cellFill)
 
         return grid
 
@@ -51,8 +59,16 @@ class TestGrid:
                 else:
                     x = x + CELL_MARGIN + CELL_WIDTH
 
+                # Set colour based on grid list contents
+                if self.gridList[row][column] == 1:
+                    colour = (200, 50, 50)
+                elif self.gridList[row][column] == 2:
+                    colour = (50, 50, 200)
+                else:
+                    colour = (200, 200, 200)
+
                 # Draw cell
-                pygame.draw.rect(self.screen, (200, 200, 200), [x, y, CELL_HEIGHT, CELL_WIDTH])
+                pygame.draw.rect(self.screen, colour, [x, y, CELL_HEIGHT, CELL_WIDTH])
 
 if __name__ == "__main__":
     pygame.init()
@@ -60,6 +76,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = TestGrid(40, 40, screen)
+    #print(gridA.gridList)
     gridA.drawGrid()
 
     for i in range(0, 100):
