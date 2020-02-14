@@ -5,7 +5,7 @@ class Dungeon:
     '''Class for generating a dungeon - Represents the whole Binary Search Tree'''
     def __init__(self, rooms, xSize, ySize):
         self.numRooms = rooms
-        self.mainRegion = Region(0, 0, xSize, ySize)
+        self.mainRegion = Region(0, 0, xSize, ySize) # Root of tree
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
