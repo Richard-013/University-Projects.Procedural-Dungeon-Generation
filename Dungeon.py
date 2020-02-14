@@ -26,11 +26,9 @@ class Region:
 
 class Room:
     '''Class to store room data'''
-    def __init__(self, xHigh, yHigh, xLow, yLow):
-        self.xTop = xHigh
-        self.yTop = yHigh
-        self.xLow = xLow
-        self.yLow = yLow
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
 
 if __name__ == "__main__":
     print("Hello Dungeon")
