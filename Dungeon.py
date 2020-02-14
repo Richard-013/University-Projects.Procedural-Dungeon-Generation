@@ -5,15 +5,23 @@ class Dungeon:
     '''Class for generating a dungeon - Represents the whole Binary Search Tree'''
     def __init__(self, rooms, xSize, ySize):
         self.numRooms = rooms
+        self.xSize = xSize
+        self.ySize = ySize
         # Root of the tree and overall region of the entire map
-        self.mainRegion = Region(0, 0, xSize, ySize, None, None)
+        self.mainRegion = Region(0, 0, self.xSize, self.ySize, None, None)
+
+    def createRegions(self):
+        currentRooms = 1
+        while currentRooms < self.numRooms:
+            # Generate rooms
+            print("IGNORE")
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
     def __init__(self, xHigh, yHigh, xLow, yLow, parentRegion, regionCode):
         # Bounding co-ordinates of the region
-        self.xTop = xHigh
-        self.yTop = yHigh
+        self.xHigh = xHigh
+        self.yHigh = yHigh
         self.xLow = xLow
         self.yLow = yLow
         # Room Information
@@ -37,6 +45,15 @@ class Region:
             name = self.parentRegion.name + str(self.regionCode)
 
         return name
+
+    def splitRegion(self):
+        '''Split region at a point on the x-axis or y-axis'''
+        if self.xHigh - self.xLow > self.yHigh - self.yLow:
+            # Split at a point on the x-axis
+            print("IGNORE")
+        else:
+            # Split at a point on the y-axis
+            print("IGNORE")
 
 class Room:
     '''Class to store room data'''
