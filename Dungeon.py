@@ -21,7 +21,7 @@ class Dungeon:
         unvisited = [self.mainRegion]
         # List of visited (split) regions
         visited = []
-        while totalRegions < self.numRooms:
+        while totalRegions < self.numRooms and unvisited:
             # Generate regions
             currentRegion = unvisited.pop(0)
             if currentRegion not in visited:
