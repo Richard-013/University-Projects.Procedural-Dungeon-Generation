@@ -50,9 +50,9 @@ class Region:
     def generateName(self):
         '''Generates a name for the room'''
         if self.parentRegion is None:
-            name = 1
+            name = "1"
         else:
-            name = self.parentRegion.name + str(self.regionCode)
+            name = self.parentRegion.name + '.' + str(self.regionCode)
 
         return name
 
