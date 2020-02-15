@@ -1,6 +1,8 @@
 # Module for dungeon generation
 # Richard Horton 2020
 
+import random
+
 class Dungeon:
     '''Class for generating a dungeon - Represents the whole Binary Search Tree'''
     def __init__(self, rooms, xSize, ySize):
