@@ -96,16 +96,18 @@ class Region:
         '''Split region at a point on the x-axis or y-axis'''
         if self.xHigh - self.xLow > self.yHigh - self.yLow:
             # Split at a point on the x-axis
-            lowMargin = int(self.xLow+(self.xLow*0.25))
-            highMargin = int(self.xHigh-(self.xHigh*0.25))
-            splitPoint = random.randint(lowMargin, highMargin)
+            #lowMargin = int(self.xLow+(self.xLow*0.25))
+            #highMargin = int(self.xHigh-(self.xHigh*0.25))
+            #splitPoint = random.randint(lowMargin, highMargin)
+            splitPoint = random.randint(self.xLow, self.xHigh)
             self.subRegion1 = Region(self.xLow, self.yLow, splitPoint, self.yHigh, self, 1)
             self.subRegion2 = Region(splitPoint+1, self.yLow, self.xHigh, self.yHigh, self, 2)
         else:
             # Split at a point on the y-axis
-            lowMargin = int(self.yLow+(self.yLow*0.25))
-            highMargin = int(self.yHigh-(self.yHigh*0.25))
-            splitPoint = random.randint(lowMargin, highMargin)
+            #lowMargin = int(self.yLow+(self.yLow*0.25))
+            #highMargin = int(self.yHigh-(self.yHigh*0.25))
+            #splitPoint = random.randint(lowMargin, highMargin)
+            splitPoint = random.randint(self.yLow, self.yHigh)
             self.subRegion1 = Region(self.xLow, self.yLow, self.xHigh, splitPoint, self, 1)
             self.subRegion2 = Region(self.xLow, splitPoint+1, self.xHigh, self.yHigh, self, 2)
 
