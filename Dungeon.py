@@ -13,10 +13,26 @@ class Dungeon:
         self.mainRegion = Region(0, 0, self.xSize, self.ySize, None, None)
 
     def createRegions(self):
-        currentRooms = 1
-        while currentRooms < self.numRooms:
-            # Generate rooms
-            print("IGNORE")
+        '''Creates the specified number of regions using BFS to traverse the dungeon tree'''
+        totalRegions = 1
+        currentRegion = None
+        # Queue of unvisited (unsplit) regions
+        unvisited = [self.mainRegion]
+        # List of visited (split) regions
+        visited = []
+        while totalRegions < self.numRooms:
+            # Generate regions
+            currentRegion = unvisited.pop(0)
+            if currentRegion not in visited:
+                currentRegion.splitRegion()
+                unvisited.append(currentRegion.subRegion1)
+                unvisited.append(currentRegion.subRegion2)
+                visited.append(currentRegion)
+                totalRegions = totalRegions + 1
+            else:
+                continue
+
+
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
