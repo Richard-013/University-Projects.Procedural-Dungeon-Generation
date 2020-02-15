@@ -11,6 +11,7 @@ class Dungeon:
         self.ySize = ySize
         # Root of the tree and overall region of the entire map
         self.mainRegion = Region(0, 0, self.xSize, self.ySize, None, None)
+        self.finalRegions = []
 
     def createRegions(self):
         '''Creates the specified number of regions using BFS to traverse the dungeon tree'''
@@ -32,7 +33,24 @@ class Dungeon:
             else:
                 continue
 
+        # Gather all regions with no children/sub-regions
+        self.collectRegions()
 
+    def collectRegions(self):
+        '''Builds a list of regions that have been fully divided using BFS'''
+        currentRegion = None
+        unvisited = [self.mainRegion]
+        visited = []
+        while unvisited:
+            currentRegion = unvisited.pop(0)
+            if currentRegion not in visited:
+                if currentRegion.subRegion1 is not None:
+                    unvisited.append(currentRegion.subRegion1)
+                if currentRegion.subRegion2 is not None:
+                    unvisited.append(currentRegion.subRegion2)
+                if currentRegion.subRegion1 is None and currentRegion.subRegion2 is None:
+                    self.finalRegions.append(currentRegion)
+                visited.append(currentRegion)
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
