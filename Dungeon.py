@@ -117,3 +117,15 @@ class Room:
 
 if __name__ == "__main__":
     print("Hello Dungeon")
+    dungeon1 = Dungeon(5, 100, 100)
+    print("Dungeon Stats:")
+    print("Target Rooms: " + str(dungeon1.numRooms))
+    print("xSize: " + str(dungeon1.xSize))
+    print("ySize: " + str(dungeon1.ySize))
+    print("Main Region:", dungeon1.mainRegion)
+    print("\n------------------------------\n")
+    print("Attempting Region Generation")
+    dungeon1.createRegions()
+    print("Success")
+    print("\n------------------------------\n")
+    print(dungeon1.finalRegions)
