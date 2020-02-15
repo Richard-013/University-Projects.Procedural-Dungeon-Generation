@@ -2,11 +2,12 @@
 # Richard Horton 2020
 
 import pygame
+import Dungeon
 
-WIN_SIZE = (500, 500)
-CELL_WIDTH = 10
-CELL_HEIGHT = 10
-CELL_MARGIN = 5
+WIN_SIZE = (1000, 1000)
+CELL_WIDTH = 8
+CELL_HEIGHT = 8
+CELL_MARGIN = 2
 
 class TestGrid:
     '''Grid class to hold functions and data whilst testing'''
@@ -25,14 +26,15 @@ class TestGrid:
             grid.append([])
             for column in range(0, self.xSize):
                 #cellLoc = str(row) + ", " + str(column)
-                if (column % 5) == 0 and (row % 5) == 0:
+                '''if (column % 5) == 0 and (row % 5) == 0:
                     cellFill = 2
                 elif (column % 5) == 0:
                     cellFill = 1
                 elif (row % 5) == 0:
                     cellFill = 1
                 else:
-                    cellFill = 0
+                    cellFill = 0'''
+                cellFill = 0
                 grid[row].append(cellFill)
 
         return grid
@@ -75,11 +77,19 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(WIN_SIZE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
-    gridA = TestGrid(31, 31, screen)
+    gridA = TestGrid(100, 100, screen)
     #print(gridA.gridList)
+
+    dungeon1 = Dungeon.Dungeon(5, 100, 100)
+    dungeon1.createRegions()
+    for region in dungeon1.finalRegions:
+        for x in range(region.xLow, region.xHigh):
+            for y in range(region.yLow, region.yHigh):
+                gridA.gridList[x][y] = 1
+
     gridA.drawGrid()
 
-    for i in range(0, 500):
+    for i in range(0, 250):
         pygame.event.get()
         pygame.display.update()
         clock.tick(60)
