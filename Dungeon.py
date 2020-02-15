@@ -18,12 +18,22 @@ class Dungeon:
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
-    def __init__(self, xHigh, yHigh, xLow, yLow, parentRegion, regionCode):
+    def __init__(self, x1, y1, x2, y2, parentRegion, regionCode):
         # Bounding co-ordinates of the region
-        self.xHigh = xHigh
-        self.yHigh = yHigh
-        self.xLow = xLow
-        self.yLow = yLow
+        if(x1 > x2 or x1 == x2):
+            self.xHigh = x1
+            self.xLow = x2
+        else:
+            self.xHigh = x2
+            self.xLow = x1
+
+        if(y1 > y2 or y1 == y2):
+            self.yHigh = y1
+            self.yLow = y2
+        else:
+            self.yHigh = y2
+            self.yLow = y1
+
         # Room Information
         self.room = None
         # Left Child
