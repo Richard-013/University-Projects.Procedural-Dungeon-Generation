@@ -25,11 +25,12 @@ class Dungeon:
             # Generate regions
             currentRegion = unvisited.pop(0)
             if currentRegion not in visited:
-                currentRegion.splitRegion()
-                unvisited.append(currentRegion.subRegion1)
-                unvisited.append(currentRegion.subRegion2)
+                if currentRegion.splittable:
+                    currentRegion.splitRegion()
+                    unvisited.append(currentRegion.subRegion1)
+                    unvisited.append(currentRegion.subRegion2)
+                    totalRegions = totalRegions + 1
                 visited.append(currentRegion)
-                totalRegions = totalRegions + 1
             else:
                 continue
 
