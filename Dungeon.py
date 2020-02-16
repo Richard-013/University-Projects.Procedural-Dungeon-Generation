@@ -82,6 +82,8 @@ class Region:
         self.regionCode = regionCode
         # Region Name
         self.name = self.generateName()
+        # Can region be split further
+        self.splittable = self.checkSplit()
 
     def generateName(self):
         '''Generates a name for the room'''
@@ -110,6 +112,15 @@ class Region:
             splitPoint = random.randint(self.yLow, self.yHigh)
             self.subRegion1 = Region(self.xLow, self.yLow, self.xHigh, splitPoint, self, 1)
             self.subRegion2 = Region(self.xLow, splitPoint+1, self.xHigh, self.yHigh, self, 2)
+
+    def checkSplit(self):
+        '''Checks if a region can be split further or if there is no more room'''
+        xLength = (self.xHigh - self.xLow) + 1
+        yLength = (self.yHigh - self.yLow) + 1
+        if xLength >= 10 or yLength >= 10:
+            return True
+        else:
+            return False
 
 class Room:
     '''Class to store room data'''
