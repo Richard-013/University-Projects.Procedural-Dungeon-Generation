@@ -112,7 +112,9 @@ class Region:
         '''Checks if a region can be split further or if there is no more room'''
         xLength = (self.xHigh - self.xLow) + 1
         yLength = (self.yHigh - self.yLow) + 1
-        if xLength >= 10 or yLength >= 10:
+        area = xLength * yLength
+        #if xLength >= 15 or yLength >= 15:
+        if area > 300:
             return True
         else:
             return False

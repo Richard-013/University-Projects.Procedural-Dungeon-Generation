@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     gridA.drawGrid()
 
-    for i in range(0, 50):
+    for i in range(0, 250):
         pygame.event.get()
         pygame.display.update()
         clock.tick(60)
