@@ -80,16 +80,19 @@ if __name__ == "__main__":
     gridA = TestGrid(100, 100, screen)
     #print(gridA.gridList)
 
-    dungeon1 = Dungeon.Dungeon(5, 100, 100)
+    dungeon1 = Dungeon.Dungeon(30, 100, 100)
     dungeon1.createRegions()
     for region in dungeon1.finalRegions:
+        print(region)
+        print((region.xLow, region.yLow))
+        print((region.xHigh, region.yHigh))
         for x in range(region.xLow, region.xHigh):
             for y in range(region.yLow, region.yHigh):
                 gridA.gridList[x][y] = 1
 
     gridA.drawGrid()
 
-    for i in range(0, 250):
+    for i in range(0, 50):
         pygame.event.get()
         pygame.display.update()
         clock.tick(60)
