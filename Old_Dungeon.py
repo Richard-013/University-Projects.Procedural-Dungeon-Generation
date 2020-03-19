@@ -5,12 +5,12 @@ import random
 
 class Dungeon:
     '''Class for generating a dungeon - Represents the whole Binary Search Tree'''
-    def __init__(self, xSize, ySize, maxRegionArea):
+    def __init__(self, rooms, xSize, ySize):
+        self.numRooms = rooms
         self.xSize = xSize
         self.ySize = ySize
-        self.maxRegionArea = maxRegionArea
         # Root of the tree and overall region of the entire map
-        self.mainRegion = Region(0, 0, self.xSize, self.ySize, self.maxRegionArea, None, None)
+        self.mainRegion = Region(0, 0, self.xSize, self.ySize, None, None)
         self.finalRegions = []
 
     def createRegions(self):
@@ -21,16 +21,15 @@ class Dungeon:
         unvisited = [self.mainRegion]
         # List of visited (split) regions
         visited = []
-        while unvisited:
+        while totalRegions < self.numRooms and unvisited:
             # Generate regions
             currentRegion = unvisited.pop(0)
             if currentRegion not in visited:
                 if currentRegion.splittable:
-                    splitStatus = currentRegion.splitRegion()
-                    if splitStatus == 0:
-                        unvisited.append(currentRegion.subRegion1)
-                        unvisited.append(currentRegion.subRegion2)
-                        totalRegions = totalRegions + 1
+                    currentRegion.splitRegion()
+                    unvisited.append(currentRegion.subRegion1)
+                    unvisited.append(currentRegion.subRegion2)
+                    totalRegions = totalRegions + 1
                 visited.append(currentRegion)
             else:
                 continue
@@ -56,7 +55,7 @@ class Dungeon:
 
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
-    def __init__(self, x1, y1, x2, y2, maxArea, parentRegion, regionCode):
+    def __init__(self, x1, y1, x2, y2, parentRegion, regionCode):
         # Bounding co-ordinates of the region
         if(x1 > x2 or x1 == x2):
             self.xHigh = x1
@@ -72,8 +71,6 @@ class Region:
             self.yHigh = y2
             self.yLow = y1
 
-        self.maxArea = maxArea
-
         # Room Information
         self.room = None
         # Left Child
@@ -87,7 +84,7 @@ class Region:
         # Region Name
         self.name = self.generateName()
         # Can region be split further
-        self.splittable = self.checkSplittable()
+        self.splittable = self.checkSplit()
 
     def generateName(self):
         '''Generates a name for the room'''
@@ -103,55 +100,36 @@ class Region:
         if self.xHigh - self.xLow > self.yHigh - self.yLow:
             # Selects random split point, +1 and -1 prevent out of bounds co-ordinates
             splitPoint = random.randint(self.xLow+1, self.xHigh-1)
-            if self.validSplit(splitPoint, True):
-                self.subRegion1 = Region(self.xLow, self.yLow, splitPoint, self.yHigh, self.maxArea, self, 1)
-                self.subRegion2 = Region(splitPoint+1, self.yLow, self.xHigh, self.yHigh, self.maxArea, self, 2)
-                return 0
+            self.subRegion1 = Region(self.xLow, self.yLow, splitPoint, self.yHigh, self, 1)
+            self.subRegion2 = Region(splitPoint+1, self.yLow, self.xHigh, self.yHigh, self, 2)
         else:
             # Selects random split point, +1 and -1 prevent out of bounds co-ordinates
             splitPoint = random.randint(self.yLow+1, self.yHigh-1)
-            if self.validSplit(splitPoint, False):
-                self.subRegion1 = Region(self.xLow, self.yLow, self.xHigh, splitPoint, self.maxArea, self, 1)
-                self.subRegion2 = Region(self.xLow, splitPoint+1, self.xHigh, self.yHigh, self.maxArea, self, 2)
-                return 0
-        return 1
+            self.subRegion1 = Region(self.xLow, self.yLow, self.xHigh, splitPoint, self, 1)
+            self.subRegion2 = Region(self.xLow, splitPoint+1, self.xHigh, self.yHigh, self, 2)
 
-    def validSplit(self, splitPoint, x):
-        '''Checks if a given split will result in an unplayable room'''
-        if x:
-            xLength1 = (splitPoint - self.xLow) + 1
-            yLength1 = (self.yHigh - self.yLow) + 1
-            xLength2 = (self.xHigh - splitPoint+1) + 1
-            yLength2 = (self.yHigh - self.yLow) + 1
-            area1 = xLength1 * yLength1
-            area2 = xLength2 * yLength2
-            if area1 > self.maxArea/2 and area2 > self.maxArea/2:
-                return True
-        else:
-            xLength1 = (self.xHigh - self.xLow) + 1
-            yLength1 = (splitPoint - self.yLow) + 1
-            xLength2 = (self.xHigh - self.xLow) + 1
-            yLength2 = (self.yHigh - splitPoint+1) + 1
-            area1 = xLength1 * yLength1
-            area2 = xLength2 * yLength2
-            if area1 > self.maxArea/2 and area2 > self.maxArea/2:
-                return True
-        return False
-
-    def checkSplittable(self):
-        '''Checks if a region can be split further'''
+    def checkSplit(self):
+        '''Checks if a region can be split further or if there is no more room'''
         xLength = (self.xHigh - self.xLow) + 1
         yLength = (self.yHigh - self.yLow) + 1
         area = xLength * yLength
-        if area > self.maxArea:
+        #if xLength >= 15 or yLength >= 15:
+        if area > 300:
             return True
         else:
             return False
 
+class Room:
+    '''Class to store room data'''
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
 if __name__ == "__main__":
     print("Hello Dungeon")
-    dungeon1 = Dungeon(100, 100, 25)
+    dungeon1 = Dungeon(5, 100, 100)
     print("Dungeon Stats:")
+    print("Target Rooms: " + str(dungeon1.numRooms))
     print("xSize: " + str(dungeon1.xSize))
     print("ySize: " + str(dungeon1.ySize))
     print("Main Region:", dungeon1.mainRegion)
