@@ -12,6 +12,7 @@ class Dungeon:
         # Root of the tree and overall region of the entire map
         self.mainRegion = Region(0, 0, self.xSize, self.ySize, self.maxRegionArea, None, None)
         self.finalRegions = []
+        self.createRegions()
 
     def createRegions(self):
         '''Creates the specified number of regions using BFS to traverse the dungeon tree'''

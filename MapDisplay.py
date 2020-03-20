@@ -82,7 +82,6 @@ if __name__ == "__main__":
 
     #dungeon1 = Dungeon.Dungeon(30, 100, 100)
     dungeon1 = Dungeon.Dungeon(100, 100, 200)
-    dungeon1.createRegions()
     for region in dungeon1.finalRegions:
         print(region)
         print((region.xLow, region.yLow))
