@@ -55,6 +55,12 @@ class Dungeon:
                     self.finalRegions.append(currentRegion)
                 visited.append(currentRegion)
 
+    def createRooms(self):
+        '''Creates a room in each region'''
+        for currentRegion in self.finalRegions:
+            if not currentRegion.splittable:
+                currentRegion.room = Room(currentRegion.xLow, currentRegion.xHigh, currentRegion.yLow, currentRegion.yHigh)
+
 class Region:
     '''Class for map region - Represents a leaf of the Binary Search Tree'''
     def __init__(self, x1, y1, x2, y2, maxArea, parentRegion, regionCode):
@@ -90,6 +96,8 @@ class Region:
         # Can region be split further
         self.splittable = self.checkSplittable()
 
+        self.room = None
+
     def generateName(self):
         '''Generates a name for the room'''
         if self.parentRegion is None:
@@ -115,6 +123,7 @@ class Region:
                 self.subRegion1 = Region(self.xLow, self.yLow, self.xHigh, splitPoint, self.maxArea, self, 1)
                 self.subRegion2 = Region(self.xLow, splitPoint+1, self.xHigh, self.yHigh, self.maxArea, self, 2)
                 return 0
+        self.splittable = False
         return 1
 
     def validSplit(self, splitPoint, x):
@@ -148,6 +157,37 @@ class Region:
             return True
         else:
             return False
+
+class Room:
+    '''Class to store room data'''
+    def __init__(self, xLow, xHigh, yLow, yHigh):
+        self.regionXLow = xLow
+        self.regionXHigh = xHigh
+        self.regionYLow = yLow
+        self.regionYHigh = yHigh
+        self.roomXLow = xLow
+        self.roomXHigh = xHigh
+        self.roomYLow = yLow
+        self.roomYHigh = yHigh
+
+        self.entranceX = None
+        self.entranceY = None
+        self.exitX = None
+        self.exitY = None
+
+        self.makeRoom()
+
+    def makeRoom(self):
+        '''Creates a room within the bounds set by the region'''
+        return True
+
+    def setEntrance(self):
+        '''Sets the entrance point for the room'''
+        return True
+
+    def setExit(self):
+        '''Sets the exit point for the room'''
+        return True
 
 if __name__ == "__main__":
     print("Hello Dungeon")
