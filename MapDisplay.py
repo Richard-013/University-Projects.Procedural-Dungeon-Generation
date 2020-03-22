@@ -3,6 +3,7 @@
 
 import pygame
 import Dungeon
+#import Old_Dungeon
 
 WIN_SIZE = (1000, 1000)
 CELL_WIDTH = 8
@@ -65,7 +66,7 @@ class TestGrid:
                 if self.gridList[row][column] == 1:
                     colour = (200, 50, 50)
                 elif self.gridList[row][column] == 2:
-                    colour = (50, 50, 200)
+                    colour = (100, 100, 200)
                 else:
                     colour = (200, 200, 200)
 
@@ -80,15 +81,21 @@ if __name__ == "__main__":
     gridA = TestGrid(100, 100, screen)
     #print(gridA.gridList)
 
-    #dungeon1 = Dungeon.Dungeon(30, 100, 100)
+    #dungeon1 = Old_Dungeon.Dungeon(30, 100, 100)
+    #dungeon1.createRegions()
     dungeon1 = Dungeon.Dungeon(100, 100, 200)
     for region in dungeon1.finalRegions:
         print(region)
         print((region.xLow, region.yLow))
         print((region.xHigh, region.yHigh))
-        for x in range(region.xLow, region.xHigh):
-            for y in range(region.yLow, region.yHigh):
-                gridA.gridList[x][y] = 1
+        for x in range(region.xLow, region.xHigh+1):
+            for y in range(region.yLow, region.yHigh+1):
+                if x == region.xLow or x == region.xHigh:
+                    gridA.gridList[x][y] = 2
+                elif y == region.yLow or y == region.yHigh:
+                    gridA.gridList[x][y] = 2
+                else:
+                    gridA.gridList[x][y] = 1
 
     gridA.drawGrid()
 
