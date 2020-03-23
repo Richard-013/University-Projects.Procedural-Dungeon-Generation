@@ -2,7 +2,8 @@
 # Richard Horton 2020
 
 import pygame
-import Dungeon
+import Map
+#import Dungeon
 #import Old_Dungeon
 
 WIN_SIZE = (1000, 1000)
@@ -83,19 +84,24 @@ if __name__ == "__main__":
 
     #dungeon1 = Old_Dungeon.Dungeon(30, 100, 100)
     #dungeon1.createRegions()
-    dungeon1 = Dungeon.Dungeon(100, 100, 200)
-    for region in dungeon1.finalRegions:
+    #dungeon1 = Dungeon.Dungeon(100, 100, 200)
+
+    theMap = Map.Map(100, 100, 200)
+
+    for region in theMap.regions:
         print(region)
-        print((region.xLow, region.yLow))
-        print((region.xHigh, region.yHigh))
-        for x in range(region.xLow, region.xHigh+1):
-            for y in range(region.yLow, region.yHigh+1):
-                if x == region.xLow or x == region.xHigh:
+        print((region.lowPoint, region.highPoint))
+        for x in range(region.lowPoint[0], region.highPoint[0]+1):
+            for y in range(region.lowPoint[1], region.highPoint[1]+1):
+                gridA.gridList[x][y] = 1
+                if x == region.lowPoint[0]:
                     gridA.gridList[x][y] = 2
-                elif y == region.yLow or y == region.yHigh:
+                elif x == region.highPoint[0]:
                     gridA.gridList[x][y] = 2
-                else:
-                    gridA.gridList[x][y] = 1
+                if y == region.lowPoint[1]:
+                    gridA.gridList[x][y] = 2
+                elif y == region.highPoint[1]:
+                    gridA.gridList[x][y] = 2
 
     gridA.drawGrid()
 
