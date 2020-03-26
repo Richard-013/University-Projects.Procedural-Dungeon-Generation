@@ -1,3 +1,6 @@
+''' Module for generating rooms within a given region
+    Richard Horton 2020 '''
+
 from random import randint
 
 class Room:
