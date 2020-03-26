@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 class Region:
     def __init__(self, x1, x2, y1, y2, maxArea):
@@ -71,7 +71,7 @@ class Region:
                 # If region is large in X than in Y
                 for i in range(0, 100):
                     # Generate new split point until a valid one is found or 100 have been tried
-                    splitPoint = random.randint(self.lowPoint[0], self.highPoint[0]) # Split on X-Axis
+                    splitPoint = randint(self.lowPoint[0], self.highPoint[0]) # Split on X-Axis
                     if self.checkValidSplit(splitPoint, 0):
                         break
                     
@@ -83,7 +83,7 @@ class Region:
             else:
                 for i in range(0, 100):
                     # Generate new split point until a valid one is found or 100 have been tried
-                    splitPoint = random.randint(self.lowPoint[0], self.highPoint[0]) # Split on X-Axis
+                    splitPoint = randint(self.lowPoint[0], self.highPoint[0]) # Split on X-Axis
                     if self.checkValidSplit(splitPoint, 1):
                         break
                 
