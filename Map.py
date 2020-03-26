@@ -4,9 +4,9 @@
 import Region
 
 class Map:
-    '''Class for generating the overall map of the dungeon
-       Takes xSize and ySize as positive integers to define size of the map
-       Takes maxArea as a positive integer to set the maximum size of any one room'''
+    ''' Class for generating the overall map of the dungeon
+        Takes xSize and ySize as positive integers to define size of the map
+        Takes maxArea as a positive integer to set the maximum size of any one room'''
     def __init__(self, xSize, ySize, maxArea):
         self.xSize = xSize
         self.ySize = ySize
@@ -43,8 +43,8 @@ class Map:
         self.getUsableRegions()'''
 
     def getUsableRegions(self):
-        '''Traverses the binary tree of the map to find all leaf nodes which
-           each represent a usable region'''
+        ''' Traverses the binary tree of the map to find all leaf nodes which
+            each represent a usable region'''
         def _findUsableRegions(currentRegion):
             if currentRegion is not None:
                 if currentRegion.checkLeaf():

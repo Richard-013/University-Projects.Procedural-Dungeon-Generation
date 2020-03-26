@@ -4,9 +4,9 @@
 from random import randint
 
 class Region:
-    '''Class for holding all data on a given region of the map
-       Takes co-ordinates of two points as separate positive integers
-       maxArea should be a positive integer to match the attribute of the parent Map'''
+    ''' Class for holding all data on a given region of the map
+        Takes co-ordinates of two points as separate positive integers
+        maxArea should be a positive integer to match the attribute of the parent Map'''
     def __init__(self, x1, x2, y1, y2, maxArea):
         self.minDimension = 3 # All regions must be at least 3x3
         self.maxArea = maxArea
@@ -20,7 +20,7 @@ class Region:
         self.createSubRegions()
 
     def setLowHigh(self, x1, x2, y1, y2):
-        '''Sorts co-ordinates into low and high points of region'''
+        ''' Sorts co-ordinates into low and high points of region'''
         if(x1 > x2 or x1 == x2):
             self.highPoint[0] = x1
             self.lowPoint[0] = x2
@@ -36,7 +36,7 @@ class Region:
             self.lowPoint[1] = y1
 
     def checkLeaf(self):
-        '''Checks to see if this region is a leaf on the Binary Tree of the map'''
+        ''' Checks to see if this region is a leaf on the Binary Tree of the map'''
         if self.subRegionLeft is None:
             if self.subRegionRight is None:
                 return True
@@ -46,7 +46,7 @@ class Region:
             return False
 
     def checkArea(self):
-        '''Checks if a region is large enough to be split further'''
+        ''' Checks if a region is large enough to be split further'''
         xLength = (self.highPoint[0] - self.lowPoint[0]) + 1
         yLength = (self.highPoint[1] - self.lowPoint[1]) + 1
         if xLength >= 3 and yLength >= 3:
@@ -59,7 +59,7 @@ class Region:
             return False
 
     def checkValidSplit(self, splitPoint, axis):
-        '''Checks that a split will not create too small a region'''
+        ''' Checks that a split will not create too small a region'''
         length = self.highPoint[axis] - splitPoint
         if length >= self.minDimension:
             length = splitPoint - self.lowPoint[axis]
@@ -71,7 +71,7 @@ class Region:
             return False
 
     def createSubRegions(self):
-        '''Splits the region into two sub-regions if it is large enough'''
+        ''' Splits the region into two sub-regions if it is large enough'''
         if self.checkArea():
             # Region is large enough to split
             if self.highPoint[0] - self.lowPoint[0] > self.highPoint[1] - self.lowPoint[1]:

@@ -12,7 +12,7 @@ CELL_HEIGHT = 8
 CELL_MARGIN = 2
 
 class TestGrid:
-    '''Grid class to hold functions and data whilst testing'''
+    ''' Grid class to hold functions and data whilst testing'''
     def __init__(self, xSize, ySize, displayScreen):
         self.xSize = xSize
         self.ySize = ySize
@@ -20,9 +20,9 @@ class TestGrid:
         self.gridList = self.makeGridList()
 
     def makeGridList(self):
-        '''Generates a 2D array/list to store data for the displayed grid
-        xSize - integer size of the grid in the x-direction
-        ySize - integer size of the grid in the y-direction'''
+        ''' Generates a 2D array/list to store data for the displayed grid
+            xSize - integer size of the grid in the x-direction
+            ySize - integer size of the grid in the y-direction'''
         grid = []
         for row in range(0, self.ySize):
             grid.append([])
@@ -42,10 +42,10 @@ class TestGrid:
         return grid
 
     def drawGrid(self):
-        '''Populates the surface with a grid of squares
-        displayScreen - pass in a pygame surface to draw rects on
-        xSize - integer size of the grid in the x-direction
-        ySize - integer size of the grid in the y-direction'''
+        ''' Populates the surface with a grid of squares
+            displayScreen - pass in a pygame surface to draw rects on
+            xSize - integer size of the grid in the x-direction
+            ySize - integer size of the grid in the y-direction'''
         self.screen.fill((75, 75, 75))
         # Loop down the y-axis
         for row in range(0, self.ySize):

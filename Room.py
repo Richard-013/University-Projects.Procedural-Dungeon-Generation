@@ -4,6 +4,9 @@
 from random import randint
 
 class Room:
+    ''' Class for holding all data on a given room in a map
+        Takes co-ordinates of two points as tuples of positive integers,
+            sorted into highest and lowest'''
     def __init__(self, lowPoint, highPoint):
         self.regionLow = lowPoint
         self.regionHigh = highPoint
