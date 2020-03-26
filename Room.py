@@ -14,6 +14,12 @@ class Room:
         # Set the exit point of the room
         return True
 
+    def generateRoomLow(self):
+        return True
+
+    def generateRoomHigh(self):
+        return True
+
     def setEntrance(self):
         # Set the entrance location for the room
         return True
