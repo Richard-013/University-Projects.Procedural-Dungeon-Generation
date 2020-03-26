@@ -1,5 +1,5 @@
-# Module for displaying the map on screen
-# Richard Horton 2020
+''' Module for displaying the map on screen
+    Richard Horton 2020 '''
 
 import pygame
 import Map

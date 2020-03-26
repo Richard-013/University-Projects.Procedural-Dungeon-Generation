@@ -1,3 +1,6 @@
+''' Module for generating a dungeon map
+    Richard Horton 2020 '''
+
 import Region
 
 class Map:
