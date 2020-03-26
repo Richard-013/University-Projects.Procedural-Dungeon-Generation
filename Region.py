@@ -1,6 +1,12 @@
+''' Module for generating regions within a given map
+    Richard Horton 2020 '''
+
 from random import randint
 
 class Region:
+    '''Class for holding all data on a given region of the map
+       Takes co-ordinates of two points as separate positive integers
+       maxArea should be a positive integer to match the attribute of the parent Map'''
     def __init__(self, x1, x2, y1, y2, maxArea):
         self.minDimension = 3 # All regions must be at least 3x3
         self.maxArea = maxArea
@@ -65,6 +71,7 @@ class Region:
             return False
 
     def createSubRegions(self):
+        '''Splits the region into two sub-regions if it is large enough'''
         if self.checkArea():
             # Region is large enough to split
             if self.highPoint[0] - self.lowPoint[0] > self.highPoint[1] - self.lowPoint[1]:
