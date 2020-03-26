@@ -1,6 +1,9 @@
 import Region
 
 class Map:
+    '''Class for generating the overall map of the dungeon
+       Takes xSize and ySize as positive integers to define size of the map
+       Takes maxArea as a positive integer to set the maximum size of any one room'''
     def __init__(self, xSize, ySize, maxArea):
         self.xSize = xSize
         self.ySize = ySize
