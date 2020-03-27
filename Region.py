@@ -8,7 +8,7 @@ class Region:
         Takes co-ordinates of two points as separate positive integers
         maxArea should be a positive integer to match the attribute of the parent Map'''
     def __init__(self, x1, x2, y1, y2, maxArea, minDimension):
-        self.minDimension = minDimension # All regions must be at least 3x3
+        self.minDimension = minDimension # All regions must be at least minDimension*minDimension
         self.maxArea = maxArea
         self.lowPoint = [0, 0]
         self.highPoint = [0, 0]
