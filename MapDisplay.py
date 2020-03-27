@@ -3,6 +3,7 @@
 
 import pygame
 import Map
+import Room
 #import Dungeon
 #import Old_Dungeon
 
@@ -86,9 +87,9 @@ if __name__ == "__main__":
     #dungeon1.createRegions()
     #dungeon1 = Dungeon.Dungeon(100, 100, 200)
 
-    theMap = Map.Map(100, 100, 200)
+    theMap = Map.Map(100, 100, 750, 15)
 
-    for region in theMap.regions:
+    '''for region in theMap.regions:
         print(region)
         print((region.lowPoint, region.highPoint))
         for x in range(region.lowPoint[0], region.highPoint[0]+1):
@@ -101,6 +102,24 @@ if __name__ == "__main__":
                 if y == region.lowPoint[1]:
                     gridA.gridList[x][y] = 2
                 elif y == region.highPoint[1]:
+                    gridA.gridList[x][y] = 2'''
+
+    for region in theMap.regions:
+        region.room = Room.Room(region.lowPoint, region.highPoint, 15)
+
+    for region in theMap.regions:
+        #print(region)
+        #print((region.lowPoint, region.highPoint))
+        for x in range(region.room.low[0], region.room.high[0]+1):
+            for y in range(region.room.low[1], region.room.high[1]+1):
+                gridA.gridList[x][y] = 1
+                if x == region.room.low[0]:
+                    gridA.gridList[x][y] = 2
+                elif x == region.room.high[0]:
+                    gridA.gridList[x][y] = 2
+                if y == region.room.low[1]:
+                    gridA.gridList[x][y] = 2
+                elif y == region.room.high[1]:
                     gridA.gridList[x][y] = 2
 
     gridA.drawGrid()

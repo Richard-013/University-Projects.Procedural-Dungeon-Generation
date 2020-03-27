@@ -7,8 +7,8 @@ class Region:
     ''' Class for holding all data on a given region of the map
         Takes co-ordinates of two points as separate positive integers
         maxArea should be a positive integer to match the attribute of the parent Map'''
-    def __init__(self, x1, x2, y1, y2, maxArea):
-        self.minDimension = 3 # All regions must be at least 3x3
+    def __init__(self, x1, x2, y1, y2, maxArea, minDimension):
+        self.minDimension = minDimension # All regions must be at least 3x3
         self.maxArea = maxArea
         self.lowPoint = [0, 0]
         self.highPoint = [0, 0]
@@ -90,8 +90,8 @@ class Region:
                 if not self.checkValidSplit(splitPoint, 0):
                     # If no valid split point was found, do not split
                     return 1
-                self.subRegionLeft = Region(self.lowPoint[0], splitPoint, self.lowPoint[1], self.highPoint[1], self.maxArea)
-                self.subRegionRight = Region(splitPoint+1, self.highPoint[0], self.lowPoint[1], self.highPoint[1], self.maxArea)
+                self.subRegionLeft = Region(self.lowPoint[0], splitPoint, self.lowPoint[1], self.highPoint[1], self.maxArea, self.minDimension)
+                self.subRegionRight = Region(splitPoint+1, self.highPoint[0], self.lowPoint[1], self.highPoint[1], self.maxArea, self.minDimension)
             else:
                 for i in range(0, 100):
                     # Generate new split point until a valid one is found or 100 have been tried
@@ -102,11 +102,11 @@ class Region:
                 if not self.checkValidSplit(splitPoint, 1):
                     # If no valid split point was found, do not split
                     return 1
-                self.subRegionLeft = Region(self.lowPoint[0], self.highPoint[0], self.lowPoint[1], splitPoint, self.maxArea)
-                self.subRegionRight = Region(self.lowPoint[0], self.highPoint[0], splitPoint+1, self.highPoint[1], self.maxArea)
+                self.subRegionLeft = Region(self.lowPoint[0], self.highPoint[0], self.lowPoint[1], splitPoint, self.maxArea, self.minDimension)
+                self.subRegionRight = Region(self.lowPoint[0], self.highPoint[0], splitPoint+1, self.highPoint[1], self.maxArea, self.minDimension)
 
 if __name__ == "__main__":
-    region = Region(0, 50, 0, 50, 500)
+    region = Region(0, 50, 0, 50, 500, 5)
     region.createSubRegions()
     print(region.subRegionLeft)
     print(region.subRegionRight)

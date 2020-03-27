@@ -2,17 +2,18 @@
     Richard Horton 2020 '''
 
 import Region
-import Room
+from Room import Room
 
 class Map:
     ''' Class for generating the overall map of the dungeon
         Takes xSize and ySize as positive integers to define size of the map
         Takes maxArea as a positive integer to set the maximum size of any one room'''
-    def __init__(self, xSize, ySize, maxArea):
+    def __init__(self, xSize, ySize, maxArea, minDimension):
         self.xSize = xSize
         self.ySize = ySize
         self.maxRegionArea = maxArea
-        self.start = Region.Region(0, self.xSize-1, 0, self.ySize-1, self.maxRegionArea)
+        self.minDimension = minDimension
+        self.start = Region.Region(0, self.xSize-1, 0, self.ySize-1, self.maxRegionArea, self.minDimension)
         self.regions = []
         self.getUsableRegions()
 
@@ -55,12 +56,12 @@ class Map:
         _findUsableRegions(self.start)
 
 if __name__ == "__main__":
-    theMap = Map(100, 100, 200)
+    theMap = Map(100, 100, 200, 10)
     #0, 10, 0, 5, 33
     print(theMap.start)
     #theMap.createRegions()
     #theMap.getUsableRegions()
     for region in theMap.regions:
-        region.room = Room.Room(region.lowPoint, region.highPoint)
+        region.room = Room(region.lowPoint, region.highPoint, 10)
         print((region.room.low, region.room.high))
     #print(len(theMap.regions))

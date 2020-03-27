@@ -7,10 +7,10 @@ class Room:
     ''' Class for holding all data on a given room in a map
         Takes co-ordinates of two points as tuples/arrays of positive integers,
             sorted into highest and lowest'''
-    def __init__(self, lowPoint, highPoint):
-        self.minDimension = 3
-        self.regionLow = lowPoint
-        self.regionHigh = highPoint
+    def __init__(self, lowPoint, highPoint, minDimension):
+        self.minDimension = minDimension-1
+        self.regionLow = (lowPoint[0]+1, lowPoint[1]+1)
+        self.regionHigh = (highPoint[0]-1, highPoint[1]-1)
         self.low = 0
         self.high = 0
 
@@ -56,29 +56,29 @@ class Room:
 
     def generateRoomLow(self):
         ''' Generates co-ordinates of the lowest corner of the room'''
-        if self.regionLow[0] == self.regionHigh[0]-3:
+        if self.regionLow[0] >= self.regionHigh[0]-self.minDimension:
             xLow = self.regionLow[0]
         else:
-            xLow = randint(self.regionLow[0], self.regionHigh[0]-3)
+            xLow = randint(self.regionLow[0], self.regionHigh[0]-self.minDimension)
         
-        if self.regionLow[1] == self.regionHigh[1]-3:
+        if self.regionLow[1] >= self.regionHigh[1]-self.minDimension:
             yLow = self.regionLow[1]
         else:
-            yLow = randint(self.regionLow[1], self.regionHigh[1]-3)
+            yLow = randint(self.regionLow[1], self.regionHigh[1]-self.minDimension)
 
         return (xLow, yLow)
 
     def generateRoomHigh(self):
         ''' Generates co-ordinates of the highest corner of the room'''
-        if self.low[0]+3 == self.regionHigh[0]:
+        if self.low[0]+self.minDimension >= self.regionHigh[0]:
             xHigh = self.regionHigh[0]
         else:
-            xHigh = randint(self.low[0]+3, self.regionHigh[0])
+            xHigh = randint(self.low[0]+self.minDimension, self.regionHigh[0])
         
-        if self.low[1]+3 == self.regionHigh[1]:
+        if self.low[1]+self.minDimension >= self.regionHigh[1]:
             yHigh = self.regionHigh[1]
         else:
-            yHigh = randint(self.low[1]+3, self.regionHigh[1])
+            yHigh = randint(self.low[1]+self.minDimension, self.regionHigh[1])
 
         return (xHigh, yHigh)
 
@@ -92,7 +92,7 @@ class Room:
 
 
 if __name__ == "__main__":
-    room = Room((0, 0), (20, 20))
+    room = Room((0, 0), (20, 20), 4)
     room.generateRoom()
     print(room.low)
     print(room.high)
