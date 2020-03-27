@@ -45,9 +45,11 @@ class Room:
         return False
 
     def generateRoomLow(self):
+        ''' Generates co-ordinates of the lowest corner of the room'''
         return True
 
     def generateRoomHigh(self):
+        ''' Generates co-ordinates of the highest corner of the room'''
         return True
 
     def setEntrance(self):
