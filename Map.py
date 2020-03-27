@@ -2,6 +2,7 @@
     Richard Horton 2020 '''
 
 import Region
+import Room
 
 class Map:
     ''' Class for generating the overall map of the dungeon
@@ -60,5 +61,6 @@ if __name__ == "__main__":
     #theMap.createRegions()
     #theMap.getUsableRegions()
     for region in theMap.regions:
-        print((region.lowPoint, region.highPoint))
-    print(len(theMap.regions))
+        region.room = Room.Room(region.lowPoint, region.highPoint)
+        print((region.room.low, region.room.high))
+    #print(len(theMap.regions))
