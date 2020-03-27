@@ -35,14 +35,21 @@ class Room:
         self.setEntrance()
         # Set the exit point of the room
         self.setExit()
+        #print(fullRoomChance)
 
     def checkRegionSize(self):
         ''' Check if the region is big enough to hold a random room'''
-        xSize = self.regionLow[0] - self.regionHigh[0]
-        ySize = self.regionLow[1] - self.regionHigh[1]
-        if xSize > 1:
-            return True
-        if ySize > 1:
+        if self.regionLow[0] == 0:
+            xSize = self.regionHigh[0] - self.minDimension
+        else:
+            xSize = self.regionHigh[0] - self.regionLow[0]
+
+        if self.regionLow[1] == 0:
+            ySize = self.regionHigh[1] - self.minDimension
+        else:
+            ySize = self.regionHigh[1] - self.regionLow[1]
+
+        if xSize > 0 and ySize > 0:
             return True
 
         return False
@@ -84,3 +91,8 @@ class Room:
         return True
 
 
+if __name__ == "__main__":
+    room = Room((0, 0), (20, 20))
+    room.generateRoom()
+    print(room.low)
+    print(room.high)
