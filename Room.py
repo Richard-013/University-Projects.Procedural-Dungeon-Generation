@@ -15,18 +15,24 @@ class Room:
         self.high = 0
 
     def generateRoom(self):
-        fullRoomChance = randint(0, 100)
-        if fullRoomChance <= 5:
+        ''' Generates co-ordinates of the room within the bounds of the region'''
+        if self.checkRegionSize():
+            fullRoomChance = randint(0, 100)
+        else:
+            # If the region is already 3x3 set the whole region as the room
+            fullRoomChance = 100
+        if fullRoomChance >= 95:
             # Room is the entire region
-            return True
+            self.low = self.regionLow
+            self.high = self.regionHigh
         else:
             # Generate random area as room
-            return False
-        # Decide if room will be the entire region or only some of it
-        # If only some, generate room co-ordinates for high and low points
+            self.low = self.generateRoomLow
+            self.high = self.generateRoomHigh
         # Set the entry point of the room
+        self.setEntrance()
         # Set the exit point of the room
-        return True
+        self.setExit()
 
     def checkRegionSize(self):
         ''' Check if the region is big enough to hold a random room'''
