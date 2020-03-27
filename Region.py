@@ -17,6 +17,8 @@ class Region:
         self.subRegionLeft = None
         self.subRegionRight = None
 
+        self.room = None
+
         self.createSubRegions()
 
     def setLowHigh(self, x1, x2, y1, y2):
@@ -34,6 +36,9 @@ class Region:
         else:
             self.highPoint[1] = y2
             self.lowPoint[1] = y1
+
+        self.lowPoint = (self.lowPoint[0], self.lowPoint[1])
+        self.highPoint = (self.highPoint[0], self.highPoint[1])
 
     def checkLeaf(self):
         ''' Checks to see if this region is a leaf on the Binary Tree of the map'''
