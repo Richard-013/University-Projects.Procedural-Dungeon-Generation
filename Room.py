@@ -28,6 +28,16 @@ class Room:
         # Set the exit point of the room
         return True
 
+    def checkRegionSize(self):
+        ''' Check if the region is big enough to hold a random room'''
+        xSize = self.regionLow[0] - self.regionHigh[0]
+        ySize = self.regionLow[1] - self.regionHigh[1]
+        if xSize > 1:
+            return True
+        if ySize > 1:
+            return True
+        return False
+
     def generateRoomLow(self):
         return True
 
