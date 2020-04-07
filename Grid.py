@@ -95,11 +95,9 @@ class Grid:
                     self.gridCells[x][y].down = self.gridCells[x][y-1]
                     self.gridCells[x][y].neighbourList[3] = self.gridCells[x][y].down
 
-    def drawGrid(self):
-        ''' Populates the surface with a grid of squares'''
         # Fill background grey
         self.screen.fill((75, 75, 75))
-        
+
         # Loop down the y-axis
         for row in range(0, self.ySize):
             # Check if first run of loop and set y accordingly
