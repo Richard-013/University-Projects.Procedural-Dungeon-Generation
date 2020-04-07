@@ -2,6 +2,7 @@
     Richard Horton 2020 '''
 
 import pygame
+import Map
 
 WIN_SIZE = (1000, 1000)
 CELL_WIDTH = 8
@@ -95,6 +96,33 @@ class Grid:
                     self.gridCells[x][y].down = self.gridCells[x][y-1]
                     self.gridCells[x][y].neighbourList[3] = self.gridCells[x][y].down
 
+    def createMap(self, maxArea, minDimension):
+        ''' Creates a map and creates it within the grid'''
+        theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension)
+
+        for curRegion in theMap.regions:
+            for x in range(curRegion.room.low[0], curRegion.room.high[0]+1):
+                for y in range(curRegion.room.low[1], curRegion.room.high[1]+1):
+                    gridA.gridCells[x][y].type = "Interior"
+                    if (x, y) == curRegion.room.entrance:
+                        gridA.gridCells[x][y].type = "Entrance"
+                    elif (x, y) == curRegion.room.exit:
+                        gridA.gridCells[x][y].type = "Exit"
+                    else:
+                        if x == curRegion.room.low[0]:
+                            gridA.gridCells[x][y].type = "Wall"
+                        elif x == curRegion.room.high[0]:
+                            gridA.gridCells[x][y].type = "Wall"
+                        if y == curRegion.room.low[1]:
+                            gridA.gridCells[x][y].type = "Wall"
+                        elif y == curRegion.room.high[1]:
+                            gridA.gridCells[x][y].type = "Wall"
+
+        # Draw grid on the screen
+        gridA.drawMap()
+
+    def drawMap(self):
+        ''' Draws the map on a grid of squares'''
         # Fill background grey
         self.screen.fill((75, 75, 75))
 
@@ -141,7 +169,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = Grid(100, 100, screen)
-    gridA.drawGrid()
+    gridA.createMap(750, 15)
 
     for i in range(0, 250):
         pygame.event.get()
