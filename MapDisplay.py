@@ -69,6 +69,10 @@ class TestGrid:
                     colour = (200, 50, 50)
                 elif self.gridList[row][column] == 2:
                     colour = (100, 100, 200)
+                elif self.gridList[row][column] == 3:
+                    colour = (220, 0, 220)
+                elif self.gridList[row][column] == 4:
+                    colour = (25, 220, 25)
                 else:
                     colour = (200, 200, 200)
 
@@ -113,14 +117,19 @@ if __name__ == "__main__":
         for x in range(region.room.low[0], region.room.high[0]+1):
             for y in range(region.room.low[1], region.room.high[1]+1):
                 gridA.gridList[x][y] = 1
-                if x == region.room.low[0]:
-                    gridA.gridList[x][y] = 2
-                elif x == region.room.high[0]:
-                    gridA.gridList[x][y] = 2
-                if y == region.room.low[1]:
-                    gridA.gridList[x][y] = 2
-                elif y == region.room.high[1]:
-                    gridA.gridList[x][y] = 2
+                if (x, y) == region.room.entrance:
+                    gridA.gridList[x][y] = 3
+                elif (x, y) == region.room.exit:
+                    gridA.gridList[x][y] = 4
+                else:
+                    if x == region.room.low[0]:
+                        gridA.gridList[x][y] = 2
+                    elif x == region.room.high[0]:
+                        gridA.gridList[x][y] = 2
+                    if y == region.room.low[1]:
+                        gridA.gridList[x][y] = 2
+                    elif y == region.room.high[1]:
+                        gridA.gridList[x][y] = 2
 
     gridA.drawGrid()
 
