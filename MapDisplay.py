@@ -43,10 +43,7 @@ class TestGrid:
         return grid
 
     def drawGrid(self):
-        ''' Populates the surface with a grid of squares
-            displayScreen - pass in a pygame surface to draw rects on
-            xSize - integer size of the grid in the x-direction
-            ySize - integer size of the grid in the y-direction'''
+        ''' Populates the surface with a grid of squares'''
         self.screen.fill((75, 75, 75))
         # Loop down the y-axis
         for row in range(0, self.ySize):
