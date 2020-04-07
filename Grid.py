@@ -92,7 +92,7 @@ class Grid:
                 if y > 0:
                     # Add below neighbour if there should be one
                     self.gridNodes[x][y].down = self.gridNodes[x][y-1]
-                    self.gridNodes[x][y].neighbourList[4] = self.gridNodes[x][y-1]
+                    self.gridNodes[x][y].neighbourList[3] = self.gridNodes[x][y-1]
 
 
 if __name__ == "__main__":
