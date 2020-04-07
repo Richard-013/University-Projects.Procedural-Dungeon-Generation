@@ -87,26 +87,7 @@ if __name__ == "__main__":
     gridA = TestGrid(100, 100, screen)
     #print(gridA.gridList)
 
-    #dungeon1 = Old_Dungeon.Dungeon(30, 100, 100)
-    #dungeon1.createRegions()
-    #dungeon1 = Dungeon.Dungeon(100, 100, 200)
-
     theMap = Map.Map(100, 100, 750, 15)
-
-    '''for region in theMap.regions:
-        print(region)
-        print((region.lowPoint, region.highPoint))
-        for x in range(region.lowPoint[0], region.highPoint[0]+1):
-            for y in range(region.lowPoint[1], region.highPoint[1]+1):
-                gridA.gridList[x][y] = 1
-                if x == region.lowPoint[0]:
-                    gridA.gridList[x][y] = 2
-                elif x == region.highPoint[0]:
-                    gridA.gridList[x][y] = 2
-                if y == region.lowPoint[1]:
-                    gridA.gridList[x][y] = 2
-                elif y == region.highPoint[1]:
-                    gridA.gridList[x][y] = 2'''
 
     for region in theMap.regions:
         region.room = Room.Room(region.lowPoint, region.highPoint, 15)
