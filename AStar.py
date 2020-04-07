@@ -14,17 +14,17 @@ class AStar():
         self.openCells = []
         self.closedCells = []
         self.currentCell = None
-        
+
         # Set Movement Costs
-        self.diagWeight = 14  # Cost of a diagonal movement
         self.horiWeight = 10  # Cost of a horizontal movement
         self.vertiWeight = 10  # Cost of a vertical movement
-        
+
         # Store start and target co-ordinates
         self.start = start
         self.target = target
 
         self.setStart()
+        self.markBlockedCells()
 
     def setStart(self):
         ''' Sets up current cell's values and adds it to the open cells list'''
@@ -37,12 +37,12 @@ class AStar():
     def calcDistance(self, currentX, currentY, targetX, targetY):
         ''' Calculate the distance between two cells'''
         # Distance along X-Axis
-        distX = abs(currentX - targetX)
+        distX = abs(targetX - currentX)
         # Distance along Y-Axis
-        distY = abs(currentY - targetY)
+        distY = abs(targetY - currentY)
 
         # Return the total distance
-        return distX + distY
+        return (distX*self.horiWeight) + (distY*self.vertiWeight)
 
     def generateValues(self, workingCell):
         ''' Generates f, g, and h values for the given cell pairing, and updates if they
@@ -62,7 +62,7 @@ class AStar():
         for workingCell in self.currentCell.neighbourList:
             if workingCell is not None and workingCell not in self.closedCells:
                 self.generateValues(workingCell)
-                if workingCell.x == self.target[0] and workingCell.y == self.target[0]:
+                if workingCell.x == self.target[0] and workingCell.y == self.target[1]:
                     goalFound = True
                     break
                 elif workingCell not in self.openCells:
@@ -97,27 +97,33 @@ class AStar():
             # If Cell B is more preferable return Cell B
             return cellB
 
+    def markBlockedCells(self):
+        ''' Places any blocked cells in the closed cells list'''
+        for x in range(0, self.grid.xSize):
+            for y in range(0, self.grid.ySize):
+                if self.grid.gridCells[x][y].blocked is True:
+                    self.closedCells.append(self.grid.gridCells[x][y])
+
     def findPath(self):
         ''' Finds the path using A*'''
         goalReached = False
         # While there are still possible cells to visit, iterate through them
-        while(self.openCells):
-            if(len(self.openCells) == 1):
+        while self.openCells:
+            if len(self.openCells) == 1:
                 # If there is only one cell available to visit, generate its neighbour values
                 self.currentCell = self.openCells.pop(0)
                 goalReached = self.generateNeighbourValues()
                 self.closedCells.append(self.currentCell)
-                if(goalReached):
+                if goalReached:
                     # Break the loop if the goal is found
                     break
             else:
                 # If there is more than one available cell, choose the most optimal available
                 nextCell = self.openCells[0]
                 for j in range(1, len(self.openCells)):
-                    if(self.compareNodes(nextCell, self.openCells[j]) == self.openCells[j]):
-                        # If the new cell is more optimal, select it
+                    if self.compareNodes(nextCell, self.openCells[j]) == self.openCells[j]:
+                        # If the new cell is more optimal and is not blocked, select it
                         nextCell = self.openCells[j]
-                print(nextCell)
                 # Move to the next cell
                 self.currentCell = nextCell
                 # Generate new neighbour values and check if goal is reached
@@ -126,11 +132,11 @@ class AStar():
                 self.openCells.remove(self.currentCell)
                 self.closedCells.append(self.currentCell)
 
-                if(goalReached):
+                if goalReached:
                     # Break the loop if the goal has been reached
                     break
 
-        if(goalReached):
+        if goalReached:
             # Return the path taken if the goal was reached
             print(self.generatePath())
         else:
@@ -141,11 +147,11 @@ class AStar():
         ''' Back-tracks through the navigation to the target and generates a followable path'''
         path = []
         thisCell = self.grid.gridCells[self.target[0]][self.target[1]]
-        while(True):
-            path.append((thisCell.y, thisCell.y))
-            thisCell = thisCell.parent
+        while True:
+            path.append((thisCell.x, thisCell.y))
             if(thisCell.x == self.start[0] and thisCell.y == self.start[1]):
                 break
+            thisCell = thisCell.parent
 
         path.reverse()
         return path
@@ -155,12 +161,15 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(WIN_SIZE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
-    gridA = Grid.Grid(100, 100, screen)
-    gridA.createMap(750, 15)
+    gridA = Grid.Grid(10, 10, screen)
+    gridA.createMap(20, 6)
 
-    for i in range(0, 250):
-        pygame.event.get()
-        pygame.display.update()
-        clock.tick(60)
+    astarObj = AStar(gridA, (0, 0), (2, 2))
+    astarObj.findPath()
+
+    #for i in range(0, 250):
+     #   pygame.event.get()
+      #  pygame.display.update()
+       # clock.tick(60)
 
     pygame.quit()
