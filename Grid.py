@@ -50,6 +50,45 @@ class Grid:
         self.ySize = ySize
         self.screen = displayScreen
 
+        self.gridNodes = []
+        self.generateNodes()
+
+    def generateNodes(self):
+        # Generate nodes column by column
+        for x in range(0, self.xSize):
+            currentColumn = []
+            # Populate the column with nodes for each value of X
+            for y in range(0, self.ySize):
+                currentColumn.append(Node(x, y))
+            # Insert column into grid
+            self.gridNodes.append(currentColumn)
+        self.generateNeighbourNodes()
+
+    def generateNeighbourNodes(self):
+        # Assign each node its neighbours
+        for x in range(0, self.xSize):
+            for y in range(0, self.ySize):
+                if(x < self.xSize-1):
+                    # Add right neighbour if there should be one
+                    self.gridNodes[x][y].right = self.gridNodes[x+1][y]
+                    self.gridNodes[x][y].neighbourList[0] = self.gridNodes[x+1][y]
+
+                if(y < self.ySize-1):
+                    # Add above neighbour if there should be one
+                    self.gridNodes[x][y].up = self.gridNodes[x][y+1]
+                    self.gridNodes[x][y].neighbourList[1] = self.gridNodes[x][y+1]
+
+                if(x > 0):
+                    # Add left neighbour if there should be one
+                    self.gridNodes[x][y].left = self.gridNodes[x-1][y]
+                    self.gridNodes[x][y].neighbourList[2] = self.gridNodes[x-1][y]
+
+                if(y > 0):
+                    # Add below neighbour if there should be one
+                    self.gridNodes[x][y].down = self.gridNodes[x][y-1]
+                    self.gridNodes[x][y].neighbourList[4] = self.gridNodes[x][y-1]
+
+
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode(WIN_SIZE)
