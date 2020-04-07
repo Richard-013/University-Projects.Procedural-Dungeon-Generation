@@ -103,23 +103,23 @@ class Grid:
         for curRegion in theMap.regions:
             for x in range(curRegion.room.low[0], curRegion.room.high[0]+1):
                 for y in range(curRegion.room.low[1], curRegion.room.high[1]+1):
-                    gridA.gridCells[x][y].type = "Interior"
+                    self.gridCells[x][y].type = "Interior"
                     if (x, y) == curRegion.room.entrance:
-                        gridA.gridCells[x][y].type = "Entrance"
+                        self.gridCells[x][y].type = "Entrance"
                     elif (x, y) == curRegion.room.exit:
-                        gridA.gridCells[x][y].type = "Exit"
+                        self.gridCells[x][y].type = "Exit"
                     else:
                         if x == curRegion.room.low[0]:
-                            gridA.gridCells[x][y].type = "Wall"
+                            self.gridCells[x][y].type = "Wall"
                         elif x == curRegion.room.high[0]:
-                            gridA.gridCells[x][y].type = "Wall"
+                            self.gridCells[x][y].type = "Wall"
                         if y == curRegion.room.low[1]:
-                            gridA.gridCells[x][y].type = "Wall"
+                            self.gridCells[x][y].type = "Wall"
                         elif y == curRegion.room.high[1]:
-                            gridA.gridCells[x][y].type = "Wall"
+                            self.gridCells[x][y].type = "Wall"
 
         # Draw grid on the screen
-        gridA.drawMap()
+        self.drawMap()
 
     def drawMap(self):
         ''' Draws the map on a grid of squares'''
