@@ -22,6 +22,25 @@ class AStar():
         self.startY = startY
         self.targetX = targetX
         self.targetY = targetY
+        self.setStart()
+
+    def setStart(self):
+        ''' Sets up current node's values and adds it to the open nodes list'''
+        self.currentNode = self.grid.gridNodes[self.startX][self.startY]
+        self.currentNode.gVal = 0
+        self.currentNode.hVal = self.calcDistance(self.startX, self.startY, self.targetX, self.targetY)
+        self.currentNode.fVal = 0
+        self.openNodes.append(self.currentNode)
+
+    def calcDistance(self, currentX, currentY, targetX, targetY):
+        ''' Calculate the distance between two nodes'''
+        # Distance along X-Axis
+        distX = abs(currentX - targetX)
+        # Distance along Y-Axis
+        distY = abs(currentY - targetY)
+
+        # Return the total distance
+        return distX + distY
 
 if __name__ == "__main__":
     pygame.init()
