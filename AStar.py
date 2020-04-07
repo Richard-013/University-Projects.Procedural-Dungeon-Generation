@@ -97,6 +97,59 @@ class AStar():
             # If Cell B is more preferable return Cell B
             return cellB
 
+    def findPath(self):
+        ''' Finds the path using A*'''
+        goalReached = False
+        # While there are still possible cells to visit, iterate through them
+        while(self.openCells):
+            if(len(self.openCells) == 1):
+                # If there is only one cell available to visit, generate its neighbour values
+                self.currentCell = self.openCells.pop(0)
+                goalReached = self.generateNeighbourValues()
+                self.closedCells.append(self.currentCell)
+                if(goalReached):
+                    # Break the loop if the goal is found
+                    break
+            else:
+                # If there is more than one available cell, choose the most optimal available
+                nextCell = self.openCells[0]
+                for j in range(1, len(self.openCells)):
+                    if(self.compareNodes(nextCell, self.openCells[j]) == self.openCells[j]):
+                        # If the new cell is more optimal, select it
+                        nextCell = self.openCells[j]
+                print(nextCell)
+                # Move to the next cell
+                self.currentCell = nextCell
+                # Generate new neighbour values and check if goal is reached
+                goalReached = self.generateNeighbourValues()
+                # Update cell lists
+                self.openCells.remove(self.currentCell)
+                self.closedCells.append(self.currentCell)
+
+                if(goalReached):
+                    # Break the loop if the goal has been reached
+                    break
+
+        if(goalReached):
+            # Return the path taken if the goal was reached
+            print(self.generatePath())
+        else:
+            # Print message of no possible path if the goal was not found
+            print("No Possible Path")
+
+    def generatePath(self):
+        ''' Back-tracks through the navigation to the target and generates a followable path'''
+        path = []
+        thisCell = self.grid.gridCells[self.target[0]][self.target[1]]
+        while(True):
+            path.append((thisCell.y, thisCell.y))
+            thisCell = thisCell.parent
+            if(thisCell.x == self.start[0] and thisCell.y == self.start[1]):
+                break
+
+        path.reverse()
+        return path
+
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode(WIN_SIZE)
