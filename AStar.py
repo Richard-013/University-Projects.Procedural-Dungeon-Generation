@@ -11,9 +11,9 @@ class AStar():
     def __init__(self, currentGrid, start, target):
         # Create lists and grid
         self.grid = currentGrid
-        self.openNodes = []
-        self.closedNodes = []
-        self.currentNode = None
+        self.openCells = []
+        self.closedCells = []
+        self.currentCell = None
         
         # Set Movement Costs
         self.diagWeight = 14  # Cost of a diagonal movement
@@ -27,15 +27,15 @@ class AStar():
         self.setStart()
 
     def setStart(self):
-        ''' Sets up current node's values and adds it to the open nodes list'''
-        self.currentNode = self.grid.gridNodes[self.start[0]][self.start[1]]
-        self.currentNode.gVal = 0
-        self.currentNode.hVal = self.calcDistance(self.start[0], self.start[1], self.target[0], self.target[1])
-        self.currentNode.fVal = 0
-        self.openNodes.append(self.currentNode)
+        ''' Sets up current cell's values and adds it to the open cells list'''
+        self.currentCell = self.grid.gridCells[self.start[0]][self.start[1]]
+        self.currentCell.gVal = 0
+        self.currentCell.hVal = self.calcDistance(self.start[0], self.start[1], self.target[0], self.target[1])
+        self.currentCell.fVal = 0
+        self.openCells.append(self.currentCell)
 
     def calcDistance(self, currentX, currentY, targetX, targetY):
-        ''' Calculate the distance between two nodes'''
+        ''' Calculate the distance between two cells'''
         # Distance along X-Axis
         distX = abs(currentX - targetX)
         # Distance along Y-Axis
