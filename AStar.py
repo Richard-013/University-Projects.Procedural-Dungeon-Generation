@@ -44,28 +44,53 @@ class AStar():
         # Return the total distance
         return distX + distY
 
+    def generateValues(self, workingCell):
+        ''' Generates f, g, and h values for the given cell pairing, and updates if they
+            are more efficient'''
+        tempG = self.calcDistance(workingCell.x, workingCell.y, self.currentCell.x, self.currentCell.y)
+        tempH = self.calcDistance(workingCell.x, workingCell.y, self.target[0], self.target[1])
+        tempF = tempG + tempH
+        if workingCell.fVal is None or tempF < workingCell.fVal:
+            workingCell.gVal = tempG
+            workingCell.hVal = tempH
+            workingCell.fVal = tempF
+            workingCell.parent = self.currentCell
+
+    def generateNeighbourValues(self):
+        ''' Generates the f, g, and h values for neighbouring cells'''
+        goalFound = False
+        for workingCell in self.currentCell.neighbourList:
+            if workingCell is not None and workingCell not in self.closedCells:
+                self.generateValues(workingCell)
+                if workingCell.x == self.target[0] and workingCell.y == self.target[0]:
+                    goalFound = True
+                    break
+                elif workingCell not in self.openCells:
+                    self.openCells.append(workingCell)
+        return goalFound
+
     def compareNodes(self, cellA, cellB):
         ''' Returns preferred cell'''
-        if(cellA.fVal == cellB.fVal):
+        if cellA.fVal == cellB.fVal:
             return self.compareHVals(cellA, cellB)
-        elif(cellA.fVal > cellB.fVal):
+        elif cellA.fVal > cellB.fVal:
             return cellA
         else:
             return cellB
 
     def compareHVals(self, cellA, cellB):
         ''' Compares cells based on their h-value'''
-        if(cellA.hVal == cellB.hVal):
+        if cellA.hVal == cellB.hVal:
             # If h-values are equal, compare the g-values
             return self.compareGVals(cellA, cellB)
-        elif(cellA.hVal > cellB.hVal):
+        elif cellA.hVal > cellB.hVal:
             return cellA
         else:
             return cellB
 
     def compareGVals(self, cellA, cellB):
         ''' Compares cells based on their g-value'''
-        if(cellA.gVal == cellB.gVal or cellA.gVal > cellB.gVal):
+        if cellA.gVal == cellB.gVal or cellA.gVal > cellB.gVal:
             # If Cell A is preferred or the cells are equally preferable, return Cell A
             return cellA
         else:
