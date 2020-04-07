@@ -16,33 +16,7 @@ class Map:
         self.start = Region.Region(0, self.xSize-1, 0, self.ySize-1, self.maxRegionArea, self.minDimension)
         self.regions = []
         self.getUsableRegions()
-
-    '''
-    Unused Iterative Region Creation - Usable if Recursion Depth is an issue
-    def createRegions(self):
-        ''''''Creates the specified number of regions using BFS to traverse the dungeon tree''''''
-        n = 0
-        currentRegion = None
-        # Queue of unvisited (unsplit) regions
-        unvisited = [self.start]
-        # List of visited (split) regions
-        visited = []
-        while unvisited:
-            #if n == 100:
-                #break
-            # Generate regions
-            currentRegion = unvisited.pop(0)
-            if currentRegion not in visited:
-                currentRegion.createSubRegions()
-                if currentRegion.subRegionLeft is not None:
-                    unvisited.append(currentRegion.subRegionLeft)
-                if currentRegion.subRegionRight is not None:
-                    unvisited.append(currentRegion.subRegionRight)
-                visited.append(currentRegion)
-
-            n = n + 1
-
-        self.getUsableRegions()'''
+        self.createRooms()
 
     def getUsableRegions(self):
         ''' Traverses the binary tree of the map to find all leaf nodes which
@@ -55,6 +29,11 @@ class Map:
                 _findUsableRegions(currentRegion.subRegionRight)
         _findUsableRegions(self.start)
 
+    def createRooms(self):
+        ''' Creates a room in each of the usable regions'''
+        for currentRegion in self.regions:
+            currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, 15)
+
 if __name__ == "__main__":
     theMap = Map(100, 100, 200, 10)
     #0, 10, 0, 5, 33
@@ -62,6 +41,6 @@ if __name__ == "__main__":
     #theMap.createRegions()
     #theMap.getUsableRegions()
     for region in theMap.regions:
-        region.room = Room(region.lowPoint, region.highPoint, 10)
+        #region.room = Room(region.lowPoint, region.highPoint, 10)
         print((region.room.low, region.room.high))
     #print(len(theMap.regions))
