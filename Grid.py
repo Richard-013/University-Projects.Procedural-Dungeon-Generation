@@ -15,12 +15,18 @@ class Node():
         self.x = x
         self.y = y
         self.parent = None  # Parent on the path found by A-Star
+        
+        # Data
+        self.blocked = False
+        self.colour = (100, 100, 100)
+
         # Neighbours
         self.up = None
         self.down = None
         self.left = None
         self.right = None
         self.neighbourList = [None, None, None, None]
+        
         # Set-up f,g,h values for A-Star to use
         self.fVal = None  # G + H
         self.gVal = None  # Distance from starting node
