@@ -10,3 +10,16 @@ class Grid:
         self.ySize = ySize
         self.screen = displayScreen
 
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode(WIN_SIZE)
+    clock = pygame.time.Clock()
+    pygame.display.set_caption("Grid Test")
+    gridA = Grid(100, 100, screen)
+
+    for i in range(0, 250):
+        pygame.event.get()
+        pygame.display.update()
+        clock.tick(60)
+
+    pygame.quit()
