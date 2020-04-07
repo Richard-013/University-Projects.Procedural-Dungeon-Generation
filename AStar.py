@@ -44,6 +44,34 @@ class AStar():
         # Return the total distance
         return distX + distY
 
+    def compareNodes(self, cellA, cellB):
+        ''' Returns preferred cell'''
+        if(cellA.fVal == cellB.fVal):
+            return self.compareHVals(cellA, cellB)
+        elif(cellA.fVal > cellB.fVal):
+            return cellA
+        else:
+            return cellB
+
+    def compareHVals(self, cellA, cellB):
+        ''' Compares cells based on their h-value'''
+        if(cellA.hVal == cellB.hVal):
+            # If h-values are equal, compare the g-values
+            return self.compareGVals(cellA, cellB)
+        elif(cellA.hVal > cellB.hVal):
+            return cellA
+        else:
+            return cellB
+
+    def compareGVals(self, cellA, cellB):
+        ''' Compares cells based on their g-value'''
+        if(cellA.gVal == cellB.gVal or cellA.gVal > cellB.gVal):
+            # If Cell A is preferred or the cells are equally preferable, return Cell A
+            return cellA
+        else:
+            # If Cell B is more preferable return Cell B
+            return cellB
+
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode(WIN_SIZE)
