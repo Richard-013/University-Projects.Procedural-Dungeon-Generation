@@ -8,7 +8,7 @@ CELL_WIDTH = 8
 CELL_HEIGHT = 8
 CELL_MARGIN = 2
 
-class Node():
+class Cell():
     ''' Class for an individual cell within the map grid'''
     def __init__(self, x, y):
         # Set co-ordinates of this node
@@ -17,6 +17,7 @@ class Node():
         self.parent = None  # Parent on the path found by A-Star
         
         # Data
+        self.type = "Empty"
         self.blocked = False
         self.colour = (100, 100, 100)
 
@@ -56,43 +57,84 @@ class Grid:
         self.ySize = ySize
         self.screen = displayScreen
 
-        self.gridNodes = []
-        self.generateNodes()
+        self.gridCells = []
+        self.generateCells()
 
-    def generateNodes(self):
-        ''' Generate nodes column by column'''
+    def generateCells(self):
+        ''' Generate cells column by column'''
         for x in range(0, self.xSize):
             currentColumn = []
             # Populate the column with nodes for each value of X
             for y in range(0, self.ySize):
-                currentColumn.append(Node(x, y))
+                currentColumn.append(Cell(x, y))
             # Insert column into grid
-            self.gridNodes.append(currentColumn)
-        self.generateNeighbourNodes()
+            self.gridCells.append(currentColumn)
+        self.generateNeighbourCells()
 
-    def generateNeighbourNodes(self):
-        ''' Assign each node its neighbours'''
+    def generateNeighbourCells(self):
+        ''' Assign each cell its neighbours'''
         for x in range(0, self.xSize):
             for y in range(0, self.ySize):
                 if x < self.xSize-1:
                     # Add right neighbour if there should be one
-                    self.gridNodes[x][y].right = self.gridNodes[x+1][y]
-                    self.gridNodes[x][y].neighbourList[0] = self.gridNodes[x+1][y]
+                    self.gridCells[x][y].right = self.gridCells[x+1][y]
+                    self.gridCells[x][y].neighbourList[0] = self.gridCells[x][y].right
 
                 if y < self.ySize-1:
                     # Add above neighbour if there should be one
-                    self.gridNodes[x][y].up = self.gridNodes[x][y+1]
-                    self.gridNodes[x][y].neighbourList[1] = self.gridNodes[x][y+1]
+                    self.gridCells[x][y].up = self.gridCells[x][y+1]
+                    self.gridCells[x][y].neighbourList[1] = self.gridCells[x][y].up
 
                 if x > 0:
                     # Add left neighbour if there should be one
-                    self.gridNodes[x][y].left = self.gridNodes[x-1][y]
-                    self.gridNodes[x][y].neighbourList[2] = self.gridNodes[x-1][y]
+                    self.gridCells[x][y].left = self.gridCells[x-1][y]
+                    self.gridCells[x][y].neighbourList[2] = self.gridCells[x][y].left
 
                 if y > 0:
                     # Add below neighbour if there should be one
-                    self.gridNodes[x][y].down = self.gridNodes[x][y-1]
-                    self.gridNodes[x][y].neighbourList[3] = self.gridNodes[x][y-1]
+                    self.gridCells[x][y].down = self.gridCells[x][y-1]
+                    self.gridCells[x][y].neighbourList[3] = self.gridCells[x][y].down
+
+    def drawGrid(self):
+        ''' Populates the surface with a grid of squares'''
+        # Fill background grey
+        self.screen.fill((75, 75, 75))
+        
+        # Loop down the y-axis
+        for row in range(0, self.ySize):
+            # Check if first run of loop and set y accordingly
+            if row == 0:
+                y = CELL_MARGIN
+            else:
+                y = y + CELL_MARGIN + CELL_HEIGHT
+
+            # Loop across the x-axis
+            for column in range(0, self.xSize):
+                # Check if first run of loop and set x accordingly
+                if column == 0:
+                    x = CELL_MARGIN
+                else:
+                    x = x + CELL_MARGIN + CELL_WIDTH
+
+                # Set colour based on grid list contents
+                if self.gridCells[row][column].type == "Interior":
+                    # Room interior cell colour
+                    self.gridCells[row][column].colour = (200, 50, 50)
+                elif self.gridCells[row][column].type == "Wall":
+                    # Wall cell colour
+                    self.gridCells[row][column].colour = (100, 100, 200)
+                elif self.gridCells[row][column].type == "Entrance":
+                    # Entrance cell colour
+                    self.gridCells[row][column].colour = (220, 0, 220)
+                elif self.gridCells[row][column].type == "Exit":
+                    # Exit cell colour
+                    self.gridCells[row][column].colour = (25, 220, 25)
+                else:
+                    # Empty cell colour
+                    self.gridCells[row][column].colour = (200, 200, 200)
+
+                # Draw cell
+                pygame.draw.rect(self.screen, self.gridCells[row][column].colour, [x, y, CELL_HEIGHT, CELL_WIDTH])
 
 
 if __name__ == "__main__":
@@ -101,6 +143,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = Grid(100, 100, screen)
+    gridA.drawGrid()
 
     for i in range(0, 250):
         pygame.event.get()
