@@ -8,27 +8,29 @@ WIN_SIZE = (1000, 1000)
 
 class AStar():
     ''' Class that holds data and functions for the A-Star algorithm'''
-    def __init__(self, currentGrid, startX, startY, targetX, targetY):
+    def __init__(self, currentGrid, start, target):
+        # Create lists and grid
         self.grid = currentGrid
         self.openNodes = []
         self.closedNodes = []
         self.currentNode = None
+        
         # Set Movement Costs
         self.diagWeight = 14  # Cost of a diagonal movement
         self.horiWeight = 10  # Cost of a horizontal movement
         self.vertiWeight = 10  # Cost of a vertical movement
+        
         # Store start and target co-ordinates
-        self.startX = startX
-        self.startY = startY
-        self.targetX = targetX
-        self.targetY = targetY
+        self.start = start
+        self.target = target
+
         self.setStart()
 
     def setStart(self):
         ''' Sets up current node's values and adds it to the open nodes list'''
-        self.currentNode = self.grid.gridNodes[self.startX][self.startY]
+        self.currentNode = self.grid.gridNodes[self.start[0]][self.start[1]]
         self.currentNode.gVal = 0
-        self.currentNode.hVal = self.calcDistance(self.startX, self.startY, self.targetX, self.targetY)
+        self.currentNode.hVal = self.calcDistance(self.start[0], self.start[1], self.target[0], self.target[1])
         self.currentNode.fVal = 0
         self.openNodes.append(self.currentNode)
 
