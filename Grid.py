@@ -3,6 +3,7 @@
 
 import pygame
 import Map
+import AStar
 
 WIN_SIZE = (1000, 1000)
 CELL_WIDTH = 8
@@ -59,6 +60,8 @@ class Grid:
         self.screen = displayScreen
 
         self.gridCells = []
+        self.theMap = None
+        self.corridors = []
         self.generateCells()
 
     def generateCells(self):
@@ -98,16 +101,21 @@ class Grid:
 
     def createMap(self, maxArea, minDimension):
         ''' Creates a map and creates it within the grid'''
-        theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension)
+        # Generate the map
+        self.theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension)
 
-        for curRegion in theMap.regions:
+        # Label the room tiles on the map with the appropriate type
+        for curRegion in self.theMap.regions:
             for x in range(curRegion.room.low[0], curRegion.room.high[0]+1):
                 for y in range(curRegion.room.low[1], curRegion.room.high[1]+1):
                     self.gridCells[x][y].type = "Interior"
+                    self.gridCells[x][y].blocked = True
                     if (x, y) == curRegion.room.entrance:
                         self.gridCells[x][y].type = "Entrance"
+                        self.gridCells[x][y].blocked = False
                     elif (x, y) == curRegion.room.exit:
                         self.gridCells[x][y].type = "Exit"
+                        self.gridCells[x][y].blocked = False
                     else:
                         if x == curRegion.room.low[0]:
                             self.gridCells[x][y].type = "Wall"
@@ -118,8 +126,44 @@ class Grid:
                         elif y == curRegion.room.high[1]:
                             self.gridCells[x][y].type = "Wall"
 
+        # Connect rooms by corridors
+        self.connectRooms()
+
+        for path in self.corridors:
+            for x in range(0, self.xSize):
+                for y in range(0, self.ySize):
+                    if (x, y) in path:
+                        if self.gridCells[x][y].type == "Path":
+                            # Mark overlapping pathways/corridors
+                            self.gridCells[x][y].type = "Overlap"
+                        else:
+                            # Mark pathways/corridors
+                            self.gridCells[x][y].type = "Path"
+
         # Draw grid on the screen
         self.drawMap()
+
+    def connectRooms(self):
+        ''' Creates corridors between the rooms that were generated'''
+        for k in range(0, len(self.theMap.regions)):
+            # Set start point of path
+            start = self.theMap.regions[k].room.exit
+
+            if k == len(self.theMap.regions)-1:
+                # Attempt to have two connections to the last room
+                end = self.theMap.regions[k-2].room.exit
+            else:
+                end = self.theMap.regions[k+1].room.entrance
+            
+            navigator = AStar.AStar(self, start, end)
+            # Find the path between the two points
+            path = navigator.findPath()
+            if path != 1:
+                # If a path was found, store it
+                self.corridors.append(path)
+
+            # Memory clean up
+            del navigator
 
     def drawMap(self):
         ''' Draws the map on a grid of squares'''
@@ -155,6 +199,12 @@ class Grid:
                 elif self.gridCells[row][column].type == "Exit":
                     # Exit cell colour
                     self.gridCells[row][column].colour = (25, 220, 25)
+                elif self.gridCells[row][column].type == "Path":
+                    # Path cell colour
+                    self.gridCells[row][column].colour = (255, 100, 180)
+                elif self.gridCells[row][column].type == "Overlap":
+                    # Overlapping path cell colour
+                    self.gridCells[row][column].colour = (240, 0, 255)
                 else:
                     # Empty cell colour
                     self.gridCells[row][column].colour = (200, 200, 200)
@@ -169,9 +219,11 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = Grid(100, 100, screen)
-    gridA.createMap(750, 15)
+    gridA.createMap(1000, 15)
+    #gridA.connectRooms()
+    #print(gridA.corridors)
 
-    for i in range(0, 250):
+    for i in range(0, 500):
         pygame.event.get()
         pygame.display.update()
         clock.tick(60)
