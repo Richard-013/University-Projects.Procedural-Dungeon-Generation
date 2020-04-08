@@ -20,6 +20,7 @@ class Cell():
 
         # Data
         self.type = "Empty"
+        self.roomName = None
         self.blocked = False
         self.colour = (100, 100, 100)
 
@@ -109,6 +110,7 @@ class Grid:
             for x in range(curRegion.room.low[0], curRegion.room.high[0]+1):
                 for y in range(curRegion.room.low[1], curRegion.room.high[1]+1):
                     self.gridCells[x][y].type = "Interior"
+                    self.gridCells[x][y].roomName = curRegion.room.name
                     self.gridCells[x][y].blocked = True
                     if (x, y) == curRegion.room.entrance:
                         self.gridCells[x][y].type = "Entrance"
@@ -169,6 +171,10 @@ class Grid:
         ''' Draws the map on a grid of squares'''
         # Fill background grey
         self.screen.fill((10, 10, 10))
+        # Set font for displaying room names
+        font = pygame.font.Font('freesansbold.ttf', 20)
+        # Create list to store rendered room names
+        roomNames = []
 
         # Loop down the y-axis
         for row in range(0, self.ySize):
@@ -185,7 +191,7 @@ class Grid:
                     x = CELL_MARGIN
                 else:
                     x = x + CELL_MARGIN + CELL_WIDTH
-
+                roomText = None
                 # Set colour based on grid list contents
                 if self.gridCells[row][column].type == "Interior":
                     # Room interior cell colour
@@ -193,6 +199,13 @@ class Grid:
                 elif self.gridCells[row][column].type == "Wall":
                     # Wall cell colour
                     self.gridCells[row][column].colour = (50, 50, 50)
+                    # Get the room name
+                    roomName = self.gridCells[row][column].roomName
+                    # Check if the current room's name has been rendered
+                    if roomName not in roomNames:
+                        # Render the room name and make a note of it in the list
+                        roomText = font.render(roomName, True, (240, 240, 240))
+                        roomNames.append(roomName)
                 elif self.gridCells[row][column].type == "Entrance":
                     # Entrance cell colour
                     self.gridCells[row][column].colour = (220, 10, 10)
@@ -201,16 +214,20 @@ class Grid:
                     self.gridCells[row][column].colour = (10, 10, 220)
                 elif self.gridCells[row][column].type == "Path":
                     # Path cell colour
-                    self.gridCells[row][column].colour = (200, 190, 140)
+                    self.gridCells[row][column].colour = (165, 42, 42)
                 elif self.gridCells[row][column].type == "Overlap":
                     # Overlapping path cell colour
-                    self.gridCells[row][column].colour = (210, 150, 75)
+                    self.gridCells[row][column].colour = (110, 15, 25)
                 else:
                     # Empty cell colour
                     self.gridCells[row][column].colour = (10, 10, 10)
 
                 # Draw cell
-                pygame.draw.rect(self.screen, self.gridCells[row][column].colour, [x, y, CELL_HEIGHT, CELL_WIDTH])
+                renderedCell = pygame.draw.rect(self.screen, self.gridCells[row][column].colour, [x, y, CELL_HEIGHT, CELL_WIDTH])
+                # If there is a room name to render, render it on the new cell
+                if roomText is not None:
+                    roomNameRect = roomText.get_rect(center=(renderedCell.left, renderedCell.top))
+                    screen.blit(roomText, roomNameRect)
 
 
 if __name__ == "__main__":
