@@ -55,11 +55,11 @@ class Cell():
 class Grid:
     ''' Grid class to hold functions and data about the grid the map is
         being display on'''
-    def __init__(self, xSize, ySize, displayScreen):
+    def __init__(self, xSize, ySize, displayScreen, pathRender):
         self.xSize = xSize
         self.ySize = ySize
         self.screen = displayScreen
-
+        self.pathRender = pathRender
         self.gridCells = []
         self.theMap = None
         self.corridors = []
@@ -128,19 +128,20 @@ class Grid:
                         elif y == curRegion.room.high[1]:
                             self.gridCells[x][y].type = "Wall"
 
-        # Connect rooms by corridors
-        self.connectRooms()
+        if self.pathRender:
+            # Connect rooms by corridors
+            self.connectRooms()
 
-        for path in self.corridors:
-            for x in range(0, self.xSize):
-                for y in range(0, self.ySize):
-                    if (x, y) in path:
-                        if self.gridCells[x][y].type == "Path":
-                            # Mark overlapping pathways/corridors
-                            self.gridCells[x][y].type = "Overlap"
-                        else:
-                            # Mark pathways/corridors
-                            self.gridCells[x][y].type = "Path"
+            for path in self.corridors:
+                for x in range(0, self.xSize):
+                    for y in range(0, self.ySize):
+                        if (x, y) in path:
+                            if self.gridCells[x][y].type == "Path":
+                                # Mark overlapping pathways/corridors
+                                self.gridCells[x][y].type = "Overlap"
+                            else:
+                                # Mark pathways/corridors
+                                self.gridCells[x][y].type = "Path"
 
         # Draw grid on the screen
         self.drawMap()
@@ -227,7 +228,7 @@ class Grid:
                 # If there is a room name to render, render it on the new cell
                 if roomText is not None:
                     roomNameRect = roomText.get_rect(center=(renderedCell.left, renderedCell.top))
-                    screen.blit(roomText, roomNameRect)
+                    self.screen.blit(roomText, roomNameRect)
 
 
 if __name__ == "__main__":
@@ -235,7 +236,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(WIN_SIZE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
-    gridA = Grid(100, 100, screen)
+    gridA = Grid(100, 100, screen, True)
     gridA.createMap(1000, 15)
     #gridA.connectRooms()
     #print(gridA.corridors)
