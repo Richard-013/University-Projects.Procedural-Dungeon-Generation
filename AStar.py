@@ -1,11 +1,6 @@
 ''' Module for running A-Star Algorithm on the generated map to connect rooms
     Richard Horton 2020 '''
 
-import pygame
-import Grid
-
-WIN_SIZE = (1000, 1000)
-
 class AStar():
     ''' Class that holds data and functions for the A-Star algorithm'''
     def __init__(self, currentGrid, start, target):
@@ -13,6 +8,7 @@ class AStar():
         self.grid = currentGrid
         self.openCells = []
         self.closedCells = []
+        self.blockedCells = []
         self.currentCell = None
 
         # Set Movement Costs
@@ -23,8 +19,19 @@ class AStar():
         self.start = start
         self.target = target
 
-        self.setStart()
+        self.resetCells()
         self.markBlockedCells()
+        self.setStart()
+
+    def resetCells(self):
+        ''' Resets each cell before running the algorithm'''
+        for x in range(0, self.grid.xSize):
+            for y in range(0, self.grid.ySize):
+                thisCell = self.grid.gridCells[x][y]
+                thisCell.parent = None
+                thisCell.gVal = None
+                thisCell.hVal = None
+                thisCell.fVal = None
 
     def setStart(self):
         ''' Sets up current cell's values and adds it to the open cells list'''
@@ -60,7 +67,9 @@ class AStar():
         ''' Generates the f, g, and h values for neighbouring cells'''
         goalFound = False
         for workingCell in self.currentCell.neighbourList:
-            if workingCell is not None and workingCell not in self.closedCells:
+            if workingCell is None or (workingCell.x, workingCell.y) in self.blockedCells:
+                continue
+            elif workingCell is not None and workingCell not in self.closedCells:
                 self.generateValues(workingCell)
                 if workingCell.x == self.target[0] and workingCell.y == self.target[1]:
                     goalFound = True
@@ -138,10 +147,10 @@ class AStar():
 
         if goalReached:
             # Return the path taken if the goal was reached
-            print(self.generatePath())
+            return self.generatePath()
         else:
             # Print message of no possible path if the goal was not found
-            print("No Possible Path")
+            return 1
 
     def generatePath(self):
         ''' Back-tracks through the navigation to the target and generates a followable path'''
@@ -155,21 +164,3 @@ class AStar():
 
         path.reverse()
         return path
-
-if __name__ == "__main__":
-    pygame.init()
-    screen = pygame.display.set_mode(WIN_SIZE)
-    clock = pygame.time.Clock()
-    pygame.display.set_caption("Grid Test")
-    gridA = Grid.Grid(10, 10, screen)
-    gridA.createMap(20, 6)
-
-    astarObj = AStar(gridA, (0, 0), (2, 2))
-    astarObj.findPath()
-
-    #for i in range(0, 250):
-     #   pygame.event.get()
-      #  pygame.display.update()
-       # clock.tick(60)
-
-    pygame.quit()
