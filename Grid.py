@@ -17,7 +17,7 @@ class Cell():
         self.x = x
         self.y = y
         self.parent = None  # Parent on the path found by A-Star
-        
+
         # Data
         self.type = "Empty"
         self.blocked = False
@@ -29,7 +29,7 @@ class Cell():
         self.left = None
         self.right = None
         self.neighbourList = [None, None, None, None]
-        
+
         # Set-up f,g,h values for A-Star to use
         self.fVal = None  # G + H
         self.gVal = None  # Distance from starting node
@@ -154,7 +154,7 @@ class Grid:
                 end = self.theMap.regions[k-2].room.exit
             else:
                 end = self.theMap.regions[k+1].room.entrance
-            
+
             navigator = AStar.AStar(self, start, end)
             # Find the path between the two points
             path = navigator.findPath()
