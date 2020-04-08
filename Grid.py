@@ -168,7 +168,7 @@ class Grid:
     def drawMap(self):
         ''' Draws the map on a grid of squares'''
         # Fill background grey
-        self.screen.fill((75, 75, 75))
+        self.screen.fill((10, 10, 10))
 
         # Loop down the y-axis
         for row in range(0, self.ySize):
@@ -189,25 +189,25 @@ class Grid:
                 # Set colour based on grid list contents
                 if self.gridCells[row][column].type == "Interior":
                     # Room interior cell colour
-                    self.gridCells[row][column].colour = (200, 50, 50)
+                    self.gridCells[row][column].colour = (200, 200, 200)
                 elif self.gridCells[row][column].type == "Wall":
                     # Wall cell colour
-                    self.gridCells[row][column].colour = (100, 100, 200)
+                    self.gridCells[row][column].colour = (50, 50, 50)
                 elif self.gridCells[row][column].type == "Entrance":
                     # Entrance cell colour
-                    self.gridCells[row][column].colour = (220, 0, 220)
+                    self.gridCells[row][column].colour = (220, 10, 10)
                 elif self.gridCells[row][column].type == "Exit":
                     # Exit cell colour
-                    self.gridCells[row][column].colour = (25, 220, 25)
+                    self.gridCells[row][column].colour = (10, 10, 220)
                 elif self.gridCells[row][column].type == "Path":
                     # Path cell colour
-                    self.gridCells[row][column].colour = (255, 100, 180)
+                    self.gridCells[row][column].colour = (200, 190, 140)
                 elif self.gridCells[row][column].type == "Overlap":
                     # Overlapping path cell colour
-                    self.gridCells[row][column].colour = (240, 0, 255)
+                    self.gridCells[row][column].colour = (210, 150, 75)
                 else:
                     # Empty cell colour
-                    self.gridCells[row][column].colour = (200, 200, 200)
+                    self.gridCells[row][column].colour = (10, 10, 10)
 
                 # Draw cell
                 pygame.draw.rect(self.screen, self.gridCells[row][column].colour, [x, y, CELL_HEIGHT, CELL_WIDTH])
@@ -223,9 +223,9 @@ if __name__ == "__main__":
     #gridA.connectRooms()
     #print(gridA.corridors)
 
-    for i in range(0, 500):
-        pygame.event.get()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
         pygame.display.update()
-        clock.tick(60)
-
-    pygame.quit()
