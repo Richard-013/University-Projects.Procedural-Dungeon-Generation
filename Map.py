@@ -3,6 +3,7 @@
 
 import Region
 from Room import Room
+import string
 
 class Map:
     ''' Class for generating the overall map of the dungeon
@@ -31,8 +32,15 @@ class Map:
 
     def createRooms(self):
         ''' Creates a room in each of the usable regions'''
+        k = 0
         for currentRegion in self.regions:
-            currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, 15)
+            if k // 26 == 1:
+                name = string.digits[k-26]
+            else:
+                name = string.ascii_uppercase[k]
+
+            currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, 15, name)
+            k = k + 1
 
 if __name__ == "__main__":
     theMap = Map(100, 100, 200, 10)

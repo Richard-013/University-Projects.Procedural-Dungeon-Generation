@@ -7,7 +7,7 @@ class Room:
     ''' Class for holding all data on a given room in a map
         Takes co-ordinates of two points as tuples/arrays of positive integers,
             sorted into highest and lowest'''
-    def __init__(self, lowPoint, highPoint, minDimension):
+    def __init__(self, lowPoint, highPoint, minDimension, name):
         self.minDimension = minDimension-1
         self.regionLow = (lowPoint[0]+1, lowPoint[1]+1)
         self.regionHigh = (highPoint[0]-1, highPoint[1]-1)
@@ -16,6 +16,8 @@ class Room:
 
         self.entrance = (0, 0)
         self.exit = (0, 0)
+
+        self.name = name
 
         self.generateRoom()
 
@@ -111,7 +113,7 @@ class Room:
 
 
 if __name__ == "__main__":
-    room = Room((0, 0), (20, 20), 4)
+    room = Room((0, 0), (20, 20), 4, "A")
     room.generateRoom()
     print(room.low)
     print(room.high)
