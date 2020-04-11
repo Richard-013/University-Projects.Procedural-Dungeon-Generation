@@ -126,6 +126,16 @@ class Room:
             # Entance is on the right wall of the room (y-axis)
             return (self.high[0], randint(self.low[1]+1, self.high[1]-1))
 
+    def generateKeywords(self, dungeonType):
+        ''' Generates the keywords for describing the room'''
+        self.generateFloor(dungeonType)
+        self.generateWall(dungeonType)
+        self.generateDoor(dungeonType)
+        self.generateOccupation(dungeonType)
+        self.generateLoot()
+        self.generateDescriptor(dungeonType)
+        self.generateCorridor()
+        self.generateFeature()
 
     def generateFloor(self, dungeonType):
         ''' Generate the descriptor for the floor of the room'''
