@@ -243,6 +243,13 @@ class Room:
         corridors = ["Narrow", "Wide", "Winding", "Widening"]
         self.corridorDescriptor = corridors[randint(0, len(corridors)-1)]
 
+    def generateFeature(self):
+        ''' Generates a feature for the players to investigate/interact with'''
+        features = ["Sealed chest", "Trapdoor (Shortcut/Quick Exit)", "Trapdoor (Hidden Room)",
+                    "Pristine Fountain", "Decrepid Fountain", "Old Dead Body", "Recent Dead Body",
+                    "Book", "Spellbook", "Journal", "Quest-Specific Item", "Note (Quest Clue)",
+                    "Note (New Quest Hook)"]
+        self.feature = features[randint(0, len(features)-1)]
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
