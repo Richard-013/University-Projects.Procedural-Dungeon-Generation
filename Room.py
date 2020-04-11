@@ -19,6 +19,21 @@ class Room:
 
         self.name = name
 
+        # Room Features
+        self.floor = None
+        self.wall = None
+        self.feature = None
+        self.door = None
+        self.doorType = None
+        self.doorStrength = None
+        self.lock = None
+        self.inhabited = None
+        self.occupied = None
+        self.loot = None
+        self.lootQuality = None
+        self.roomDescriptor = None
+        self.corridorDescriptor = None
+
         self.generateRoom()
 
     def generateRoom(self):
