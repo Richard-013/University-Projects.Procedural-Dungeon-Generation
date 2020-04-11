@@ -238,6 +238,11 @@ class Room:
             descriptors = ["Derelict", "Dirty", "Clean", "Scruffy", "Well-Kept", "Untidy"]
             self.roomDescriptor = descriptors[randint(0, len(descriptors)-1)]
 
+    def generateCorridor(self):
+        ''' Generates a descriptor for the corridor out of the room'''
+        corridors = ["Narrow", "Wide", "Winding", "Widening"]
+        self.corridorDescriptor = corridors[randint(0, len(corridors)-1)]
+
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
