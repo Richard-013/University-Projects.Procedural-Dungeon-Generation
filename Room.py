@@ -127,6 +127,25 @@ class Room:
             return (self.high[0], randint(self.low[1]+1, self.high[1]-1))
 
 
+    def generateFloor(self, dungeonType):
+        ''' Generate the descriptor for the floor of the room'''
+        floors = ["Dirt", "Grassy", "Wooden", "Stone", "Cobbled", "Tiled", "Marble"]
+        if dungeonType == "Forest":
+            # Don't give forests artificial floors
+            self.floor = floors[randint(0, 1)]
+        else:
+            self.floor = floors[randint(0, len(floors)-1)]
+
+    def generateWall(self, dungeonType):
+        ''' Generate the descriptor for the walls of the room'''
+        walls = ["Shrubs", "Trees", "Stone", "Pillars", "Wooden", "Stone with Wooden Supports"]
+        if dungeonType == "Forest":
+            # Don't give forests artificial walls
+            self.wall = walls[randint(0, 1)]
+        else:
+            self.wall = walls[randint(0, len(walls)-1)]
+
+
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
     room.generateRoom()
