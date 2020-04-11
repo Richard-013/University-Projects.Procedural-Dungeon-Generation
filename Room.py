@@ -203,6 +203,32 @@ class Room:
         else:
             self.inhabited = "The room is currently being lived in"
 
+    def generateLoot(self):
+        ''' Generates the loot present in the room'''
+        lootTypes = ["Gold", "Items", "Equipment"]
+        lootTypeSelect = randint(0, 100)
+
+        if lootTypeSelect < 40:
+            self.loot = lootTypes[0]
+        elif lootTypeSelect < 75:
+            self.loot = lootTypes[1]
+        else:
+            self.loot = lootTypes[2]
+
+        lootQuality = ["Poor", "Modest", "Good", "Great", "Significant"]
+        lootQualitySelect = randint(0, 100)
+
+        if lootQualitySelect < 30:
+            self.lootQuality = lootQuality[0]
+        elif lootQualitySelect < 50:
+            self.lootQuality = lootQuality[1]
+        elif lootQualitySelect < 75:
+            self.lootQuality = lootQuality[2]
+        elif lootQualitySelect < 90:
+            self.lootQuality = lootQuality[3]
+        else:
+            self.lootQuality = lootQuality[4]
+
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
