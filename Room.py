@@ -176,6 +176,33 @@ class Room:
             # No door
             self.door = False
 
+    def generateOccupation(self, dungeonType):
+        ''' Determine if a room is currently occupied and whether people have been there before'''
+        currentlyOccupied = randint(0, 100)
+        if currentlyOccupied >= 60:
+            self.occupied = "Occupants are currently present"
+        elif currentlyOccupied >= 40:
+            self.occupied = "Occupants are not in the room, but are nearby"
+        else:
+            self.occupied = "Room has no current occupants"
+
+        inhabited = randint(0, 100)
+        if inhabited < 20:
+            if dungeonType == "Tomb" or "Ruin":
+                self.inhabited = "Signs of occupation from many years in the past"
+            else:
+                self.inhabited = "No sign of ever being inhabited"
+        elif inhabited < 40:
+            self.inhabited = "Traces of occupants from some time ago"
+        elif inhabited < 50:
+            self.inhabited = "Abandoned a little while ago"
+        elif inhabited < 60:
+            self.inhabited = "Abandoned in a hurry recently"
+        elif inhabited < 75:
+            self.inhabited = "Lived in until a few days ago"
+        else:
+            self.inhabited = "The room is currently being lived in"
+
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
