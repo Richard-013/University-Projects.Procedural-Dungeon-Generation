@@ -100,10 +100,10 @@ class Grid:
                     self.gridCells[x][y].down = self.gridCells[x][y-1]
                     self.gridCells[x][y].neighbourList[3] = self.gridCells[x][y].down
 
-    def createMap(self, maxArea, minDimension):
+    def createMap(self, maxArea, minDimension, dungeonType):
         ''' Creates a map and creates it within the grid'''
         # Generate the map
-        self.theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension)
+        self.theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension, dungeonType)
 
         # Label the room tiles on the map with the appropriate type
         for curRegion in self.theMap.regions:
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = Grid(100, 100, screen, True)
-    gridA.createMap(1000, 15)
+    gridA.createMap(1000, 15, "Ruin")
     #gridA.connectRooms()
     #print(gridA.corridors)
 
