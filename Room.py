@@ -229,6 +229,15 @@ class Room:
         else:
             self.lootQuality = lootQuality[4]
 
+    def generateDescriptor(self, dungeonType):
+        ''' Generates a descriptor for the state of the room'''
+        if dungeonType == "Forest":
+            descriptors = ["Leaf covered", "Surprisingly clean", "Branch-strewn"]
+            self.roomDescriptor = descriptors[randint(0, len(descriptors)-1)]
+        else:
+            descriptors = ["Derelict", "Dirty", "Clean", "Scruffy", "Well-Kept", "Untidy"]
+            self.roomDescriptor = descriptors[randint(0, len(descriptors)-1)]
+
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
