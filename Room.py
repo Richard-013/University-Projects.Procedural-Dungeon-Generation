@@ -145,6 +145,37 @@ class Room:
         else:
             self.wall = walls[randint(0, len(walls)-1)]
 
+    def generateDoor(self, dungeonType):
+        ''' Determine if there is a door in the room and its features'''
+        if dungeonType == "Forest":
+            # Don't put doors in forest dungeons
+            isDoor = 0
+        else:
+            isDoor = randint(0, 100)
+
+        if isDoor > 65:
+            # Generate a door
+            self.door = True
+            doorTypes = ["Wooden", "Iron", "Steel", "Iron Gate"]
+            self.doorType = doorTypes[randint(0, len(doorTypes)-1)]
+
+            doorStrengths = ["Decrepid", "Flimsy", "Normal", "Sturdy", "Elaborate"]
+            self.doorStrength = doorStrengths[randint(0, len(doorStrengths)-1)]
+
+            # Determine if the door is locked and how strongly it is locked
+            isLocked = randint(0, 100)
+            if isLocked < 75:
+                self.lock = "Unlocked"
+            elif isLocked >= 75 and isLocked < 85:
+                self.lock = "Weak Lock"
+            elif isLocked >= 85 and isLocked < 95:
+                self.lock = "Average Lock"
+            elif isLocked >= 95:
+                self.lock = "Strong Lock"
+        else:
+            # No door
+            self.door = False
+
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")
