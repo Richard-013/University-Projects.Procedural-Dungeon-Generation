@@ -33,14 +33,27 @@ class Map:
                 _findUsableRegions(currentRegion.subRegionRight)
         _findUsableRegions(self.start)
 
+    def getUsableRegionsDFS(self):
+        self.region = None
+        def _traversal(currentRegion):
+            self.region = currentRegion
+            if currentRegion not in self.regions and currentRegion.checkLeaf():
+                #Adds unvisited nodes to the visited nodes
+                self.regions.append(self.region)
+                
+            #Recursive call for any node not traversed yet
+            if currentRegion.subRegionLeft not in self.regions and currentRegion.subRegionLeft is not None:
+                _traversal(currentRegion.subRegionLeft)
+            if currentRegion.subRegionRight not in self.regions and currentRegion.subRegionRight is not None:
+                _traversal(currentRegion.subRegionRight)
+
+        _traversal(self.start)
+
     def createRooms(self):
         ''' Creates a room in each of the usable regions'''
         k = 0
         for currentRegion in self.regions:
-            if k // 26 == 1:
-                name = string.digits[k-26]
-            else:
-                name = string.ascii_uppercase[k]
+            name = str(k)
 
             currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, 15, name)
             k = k + 1
