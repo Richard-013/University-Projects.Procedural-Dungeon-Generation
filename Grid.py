@@ -130,7 +130,7 @@ class Grid:
 
         if self.pathRender:
             # Connect rooms by corridors
-            self.connectRooms()
+            self.connectRooms2()
 
             for path in self.corridors:
                 for x in range(0, self.xSize):
@@ -167,6 +167,57 @@ class Grid:
 
             # Memory clean up
             del navigator
+
+    def connectRooms2(self):
+        connectedRooms = list()
+        for currentRegion in self.theMap.regions:
+            nearestRoom = None
+            distToNearest = 999999
+            entrance = True
+
+            for nextRegion in self.theMap.regions:
+                if currentRegion.room == nextRegion.room:
+                    continue
+                if nextRegion.room in connectedRooms:
+                    continue
+
+                if nearestRoom is None:
+                    nearestRoom = nextRegion.room
+                    distToNearest = self.distTo(currentRegion.room.exit, nextRegion.room.entrance)
+                else:
+                    dist = self.distTo(currentRegion.room.exit, nextRegion.room.entrance)
+                    if dist < distToNearest:
+                        nearestRoom = nextRegion.room
+                        distToNearest = dist
+                        entrance = True
+
+                    dist = self.distTo(currentRegion.room.exit, nextRegion.room.exit)
+                    if dist < distToNearest:
+                        nearestRoom = nextRegion.room
+                        distToNearest = dist
+                        entrance = False
+
+            if entrance:
+                navigator = AStar.AStar(self, currentRegion.room.exit, nearestRoom.entrance)
+            else:
+                navigator = AStar.AStar(self, currentRegion.room.entrance, nearestRoom.exit)
+            # Find the path between the two points
+            path = navigator.findPath()
+            if path != 1:
+                # If a path was found, store it
+                self.corridors.append(path)
+
+            # Memory clean up
+            del navigator
+
+    def distTo(self, pointA, pointB):
+        # Distance along X-Axis
+        distX = abs(pointA[0] - pointB[0])
+        # Distance along Y-Axis
+        distY = abs(pointA[1] - pointB[1])
+
+        # Return the total distance
+        return distX + distY
 
     def drawMap(self):
         ''' Draws the map on a grid of squares'''
