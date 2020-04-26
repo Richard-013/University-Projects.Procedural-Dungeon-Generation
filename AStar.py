@@ -113,12 +113,12 @@ class AStar():
                 if self.grid.gridCells[x][y].blocked is True:
                     # If a cell is marked as blocked, add its coordinates to the blocked cells list
                     self.blockedCells.append((x, y))
-                elif x == 0 or y == 0:
+                '''elif x == 0 or y == 0:
                     # Prevent pathfinding following the edges of the map
                     self.blockedCells.append((x, y))
                 elif x == self.grid.xSize-1 or y == self.grid.ySize-1:
                     # Prevent pathfinding following the edges of the map
-                    self.blockedCells.append((x, y))
+                    self.blockedCells.append((x, y))'''
 
     def findPath(self):
         ''' Finds the path using A*'''

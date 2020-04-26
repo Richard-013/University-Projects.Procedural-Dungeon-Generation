@@ -17,7 +17,7 @@ class Map:
         self.maxRegionArea = maxArea
         self.minDimension = minDimension
         self.dungeonType = dungeonType
-        self.start = Region.Region(0, self.xSize-1, 0, self.ySize-1, self.maxRegionArea, self.minDimension)
+        self.start = Region.Region(0, self.xSize-2, 0, self.ySize-2, self.maxRegionArea, self.minDimension)
         self.regions = []
         self.getUsableRegions()
         self.createRooms()
@@ -34,6 +34,8 @@ class Map:
         _findUsableRegions(self.start)
 
     def getUsableRegionsDFS(self):
+        ''' Traverses the binary tree of the map to find all leaf nodes which
+            each represent a usable region'''
         self.region = None
         def _traversal(currentRegion):
             self.region = currentRegion
@@ -55,7 +57,7 @@ class Map:
         for currentRegion in self.regions:
             name = str(k)
 
-            currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, 15, name)
+            currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, self.minDimension, name)
             k = k + 1
 
         for currentRegion in self.regions:

@@ -148,15 +148,15 @@ class Grid:
 
     def connectRooms(self):
         ''' Creates corridors between the rooms that were generated'''
-        for k in range(0, len(self.theMap.regions)):
+        for k in range(len(self.theMap.regions)-1, -1, -1):
             # Set start point of path
             start = self.theMap.regions[k].room.exit
 
-            if k == len(self.theMap.regions)-1:
+            #if k == len(self.theMap.regions)-1:
                 # Attempt to have two connections to the last room
-                end = self.theMap.regions[k-2].room.exit
-            else:
-                end = self.theMap.regions[k+1].room.entrance
+                #end = self.theMap.regions[k-2].room.exit
+            #else:
+            end = self.theMap.regions[k-1].room.entrance
 
             navigator = AStar.AStar(self, start, end)
             # Find the path between the two points
