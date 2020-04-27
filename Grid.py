@@ -130,7 +130,7 @@ class Grid:
 
         if self.pathRender:
             # Connect rooms by corridors
-            self.connectRooms2()
+            self.connectRooms()
 
             for path in self.corridors:
                 for x in range(0, self.xSize):
@@ -148,36 +148,16 @@ class Grid:
 
     def connectRooms(self):
         ''' Creates corridors between the rooms that were generated'''
-        for k in range(len(self.theMap.regions)-1, -1, -1):
-            # Set start point of path
-            start = self.theMap.regions[k].room.exit
-
-            #if k == len(self.theMap.regions)-1:
-                # Attempt to have two connections to the last room
-                #end = self.theMap.regions[k-2].room.exit
-            #else:
-            end = self.theMap.regions[k-1].room.entrance
-
-            navigator = AStar.AStar(self, start, end)
-            # Find the path between the two points
-            path = navigator.findPath()
-            if path != 1:
-                # If a path was found, store it
-                self.corridors.append(path)
-
-            # Memory clean up
-            del navigator
-
-    def connectRooms2(self):
         connectedRooms = list()
         for currentRegion in self.theMap.regions:
             nearestRoom = None
             distToNearest = 999999
-            entrance = True
 
             for nextRegion in self.theMap.regions:
+                # Don't connect a room to itself
                 if currentRegion.room == nextRegion.room:
                     continue
+                # Don't connect to an already connected room
                 if nextRegion.room in connectedRooms:
                     continue
 
@@ -185,32 +165,26 @@ class Grid:
                     nearestRoom = nextRegion.room
                     distToNearest = self.distTo(currentRegion.room.exit, nextRegion.room.entrance)
                 else:
+                    # Check if the new room is closer
                     dist = self.distTo(currentRegion.room.exit, nextRegion.room.entrance)
                     if dist < distToNearest:
                         nearestRoom = nextRegion.room
                         distToNearest = dist
-                        entrance = True
 
-                    dist = self.distTo(currentRegion.room.exit, nextRegion.room.exit)
-                    if dist < distToNearest:
-                        nearestRoom = nextRegion.room
-                        distToNearest = dist
-                        entrance = False
-
-            if entrance:
-                navigator = AStar.AStar(self, currentRegion.room.exit, nearestRoom.entrance)
-            else:
-                navigator = AStar.AStar(self, currentRegion.room.entrance, nearestRoom.exit)
+            navigator = AStar.AStar(self, currentRegion.room.exit, nearestRoom.entrance)
             # Find the path between the two points
             path = navigator.findPath()
             if path != 1:
                 # If a path was found, store it
                 self.corridors.append(path)
+                # Mark the room as connected
+                connectedRooms.append(currentRegion)
 
             # Memory clean up
             del navigator
 
     def distTo(self, pointA, pointB):
+        ''' Find the Manhattan distance between two points'''
         # Distance along X-Axis
         distX = abs(pointA[0] - pointB[0])
         # Distance along Y-Axis
