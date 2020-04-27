@@ -18,13 +18,13 @@ minRoomDimension = 15
 pathRender = False
 dungeonType = "Dungeon"
 
-print("Please enter the horizontal size of the map: ")
+print("Please enter the horizontal size of the map (100 or less recommended): ")
 mapSizeX = int(input())
-print("Please enter the vertical size of the map: ")
+print("Please enter the vertical size of the map (100 or less recommended): ")
 mapSizeY = int(input())
 print("Please enter the maximum area one room should occupy: ")
 maxRoomArea = int(input())
-print("Please enter the minimum dimension a room should have: ")
+print("Please enter the minimum dimension a room should have (4 or higher recommended): ")
 minRoomDimension = int(input())
 print("What type of dungeon would you like?\n1 - Tomb\n2 - Ruin\n3 - Dungeon\n4 - Forest\n5 - Random\n")
 dungeonType = int(input())
