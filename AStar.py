@@ -12,8 +12,8 @@ class AStar():
         self.currentCell = None
 
         # Set Movement Costs
-        self.horiWeight = 10  # Cost of a horizontal movement
-        self.vertiWeight = 10  # Cost of a vertical movement
+        self.horiWeight = 1  # Cost of a horizontal movement
+        self.vertiWeight = 1  # Cost of a vertical movement
 
         # Store start and target co-ordinates
         self.start = start
@@ -38,7 +38,8 @@ class AStar():
         self.currentCell = self.grid.gridCells[self.start[0]][self.start[1]]
         self.currentCell.gVal = 0
         self.currentCell.hVal = self.calcDistance(self.start[0], self.start[1], self.target[0], self.target[1])
-        self.currentCell.fVal = 0
+        self.currentCell.fVal = self.currentCell.gVal + self.currentCell.hVal
+        self.openCells = []
         self.openCells.append(self.currentCell)
 
     def calcDistance(self, currentX, currentY, targetX, targetY):
@@ -54,7 +55,7 @@ class AStar():
     def generateValues(self, workingCell):
         ''' Generates f, g, and h values for the given cell pairing, and updates if they
             are more efficient'''
-        tempG = self.calcDistance(workingCell.x, workingCell.y, self.currentCell.x, self.currentCell.y)
+        tempG = self.currentCell.gVal + 1
         tempH = self.calcDistance(workingCell.x, workingCell.y, self.target[0], self.target[1])
         tempF = tempG + tempH
         if workingCell.fVal is None or tempF < workingCell.fVal:
@@ -65,18 +66,11 @@ class AStar():
 
     def generateNeighbourValues(self):
         ''' Generates the f, g, and h values for neighbouring cells'''
-        goalFound = False
         for workingCell in self.currentCell.neighbourList:
             if workingCell is None or (workingCell.x, workingCell.y) in self.blockedCells:
                 continue
-            elif workingCell is not None and workingCell not in self.closedCells:
+            elif workingCell not in self.closedCells:
                 self.generateValues(workingCell)
-                if workingCell.x == self.target[0] and workingCell.y == self.target[1]:
-                    goalFound = True
-                    break
-                elif workingCell not in self.openCells:
-                    self.openCells.append(workingCell)
-        return goalFound
 
     def compareNodes(self, cellA, cellB):
         ''' Returns preferred cell'''
@@ -124,33 +118,42 @@ class AStar():
         ''' Finds the path using A*'''
         goalReached = False
         # While there are still possible cells to visit, iterate through them
-        while self.openCells:
-            if len(self.openCells) == 1:
-                # If there is only one cell available to visit, generate its neighbour values
-                self.currentCell = self.openCells.pop(0)
-                goalReached = self.generateNeighbourValues()
-                self.closedCells.append(self.currentCell)
-                if goalReached:
-                    # Break the loop if the goal is found
-                    break
-            else:
-                # If there is more than one available cell, choose the most optimal available
-                nextCell = self.openCells[0]
-                for j in range(1, len(self.openCells)):
-                    if self.compareNodes(nextCell, self.openCells[j]) == self.openCells[j]:
-                        # If the new cell is more optimal and is not blocked, select it
-                        nextCell = self.openCells[j]
-                # Move to the next cell
-                self.currentCell = nextCell
-                # Generate new neighbour values and check if goal is reached
-                goalReached = self.generateNeighbourValues()
-                # Update cell lists
-                self.openCells.remove(self.currentCell)
-                self.closedCells.append(self.currentCell)
+        while len(self.openCells) > 0:
+            self.currentCell = self.openCells[0]
+            currentIndex = 0
 
-                if goalReached:
-                    # Break the loop if the goal has been reached
+            # Find the best cell to move to
+            for index, cell in enumerate(self.openCells):
+                if cell.fVal is None:
+                    continue
+
+                if cell.fVal < self.currentCell.fVal:
+                    self.currentCell = cell
+                    currentIndex = index
+
+            self.openCells.pop(currentIndex)
+            self.closedCells.append(self.currentCell)
+
+            # Check if the target cell has been reached
+            if self.currentCell.x == self.target[0]:
+                if self.currentCell.y == self.target[1]:
+                    goalReached = True
                     break
+
+            # Generate values for neighbouring cells
+            self.generateNeighbourValues()
+
+            for neighbour in self.currentCell.neighbourList:
+                # Skip if the neighbour has already been closed
+                if neighbour in self.closedCells or neighbour is None:
+                    continue
+
+                if neighbour.fVal is None:
+                    continue
+
+                # Add neighbour to the open cells list if it is not present
+                if neighbour not in self.openCells:
+                    self.openCells.append(neighbour)
 
         if goalReached:
             # Return the path taken if the goal was reached
