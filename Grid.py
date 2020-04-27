@@ -64,6 +64,7 @@ class Grid:
         self.theMap = None
         self.corridors = []
         self.generateCells()
+        self.path = 0
 
     def generateCells(self):
         ''' Generate cells column by column'''
@@ -136,6 +137,7 @@ class Grid:
                 for x in range(0, self.xSize):
                     for y in range(0, self.ySize):
                         if (x, y) in path:
+                            self.path = self.path + 1
                             if self.gridCells[x][y].type == "Path":
                                 # Mark overlapping pathways/corridors
                                 self.gridCells[x][y].type = "Overlap"

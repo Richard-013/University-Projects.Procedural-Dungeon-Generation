@@ -13,10 +13,10 @@ outputFile.close()
 
 mapSizeX = 100
 mapSizeY = 100
-maxRoomArea = 1000
+maxRoomArea = 300
 minRoomDimension = 15
-pathRender = False
 dungeonType = "Dungeon"
+pathRender = True
 
 print("Please enter the horizontal size of the map (100 or less recommended): ")
 mapSizeX = int(input())
