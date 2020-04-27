@@ -33,6 +33,8 @@ class Room:
         self.lootQuality = None
         self.roomDescriptor = None
         self.corridorDescriptor = None
+        self.enemies = None
+        self.enemyDifficulty = None
 
         self.generateRoom()
 
@@ -104,27 +106,21 @@ class Room:
 
     def setEntrance(self):
         '''Set the entrance location for the room'''
-        # Randomly determine wall that the entrance exists on
-        axis = randint(0, 10)
+        # Place the entrance on the left wall
+        if self.minDimension == 3:
+            # Set the middle cell as the exit when min dimension is 3
+            return (self.low[0]+1, self.low[1])
 
-        if axis > 5:
-            # Entrance is on the top wall of the room (x-axis)
-            return (randint(self.low[0]+1, self.high[0]-1), self.high[1])
-        else:
-            # Entance is on the left wall of the room (y-axis)
-            return (self.low[0], randint(self.low[1]+1, self.high[1]-1))
+        return (randint(self.low[0]+1, self.high[0]-1), self.low[1])
 
     def setExit(self):
         '''Set the exit location for the room'''
-        # Randomly determine wall that the entrance exists on
-        axis = randint(0, 10)
-
-        if axis > 5:
-            # Entrance is on the bottom wall of the room (x-axis)
-            return (randint(self.low[0]+1, self.high[0]-1), self.low[1])
-        else:
-            # Entance is on the right wall of the room (y-axis)
-            return (self.high[0], randint(self.low[1]+1, self.high[1]-1))
+        # Place the entrance on the right wall
+        if self.minDimension == 3:
+            # Set the middle cell as the exit when min dimension is 3
+            return (self.low[0]+1, self.high[1])
+        
+        return (randint(self.low[0]+1, self.high[0]-1), self.high[1])
 
     def generateKeywords(self, dungeonType):
         ''' Generates the keywords for describing the room'''
@@ -191,8 +187,10 @@ class Room:
         currentlyOccupied = randint(0, 100)
         if currentlyOccupied >= 60:
             self.occupied = "Occupants are currently present"
+            self.generateEnemies()
         elif currentlyOccupied >= 40:
             self.occupied = "Occupants are not in the room, but are nearby"
+            self.generateEnemies()
         else:
             self.occupied = "Room has no current occupants"
 
@@ -260,6 +258,26 @@ class Room:
                     "Book", "Spellbook", "Journal", "Quest-Specific Item", "Note (Quest Clue)",
                     "Note (New Quest Hook)"]
         self.feature = features[randint(0, len(features)-1)]
+
+    def generateEnemies(self):
+        ''' Generates a suggestion of an enemy encounter'''
+        enemyAmount = randint(0, 10)
+
+        self.enemies = str(enemyAmount)
+
+        difficulties = ["Weak", "Easy", "Average", "Difficult", "Hard"]
+        difficultySelect = randint(0, 100)
+
+        if difficultySelect < 30:
+            self.enemyDifficulty = difficulties[0]
+        elif difficultySelect < 55:
+            self.enemyDifficulty = difficulties[1]
+        elif difficultySelect < 80:
+            self.enemyDifficulty = difficulties[2]
+        elif difficultySelect < 95:
+            self.enemyDifficulty = difficulties[3]
+        else:
+            self.enemyDifficulty = difficulties[4]
 
 if __name__ == "__main__":
     room = Room((0, 0), (20, 20), 4, "A")

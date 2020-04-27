@@ -1,7 +1,6 @@
 ''' Module for generating a dungeon map
     Richard Horton 2020 '''
 
-import string
 import Region
 from Room import Room
 
@@ -15,10 +14,11 @@ class Map:
         self.xSize = xSize
         self.ySize = ySize
         self.maxRegionArea = maxArea
-        self.minDimension = minDimension
+        self.minDimension = minDimension+1
         self.dungeonType = dungeonType
         self.start = Region.Region(0, self.xSize-2, 0, self.ySize-2, self.maxRegionArea, self.minDimension)
         self.regions = []
+        self.region = None
         self.getUsableRegions()
         self.createRooms()
 
@@ -95,6 +95,12 @@ class Map:
         outputFile.write("\n")
         outputFile.write("Occupied: " + room.occupied)
         outputFile.write("\n")
+
+        if room.enemies is not None:
+            outputFile.write("Number of Enemies: " + room.enemies)
+            outputFile.write("\n")
+            outputFile.write("Encounter Difficulty: " + room.enemyDifficulty)
+            outputFile.write("\n")
 
         outputFile.write("Loot: " + room.loot)
         outputFile.write("\n")
