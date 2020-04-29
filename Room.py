@@ -122,6 +122,11 @@ class Room:
         
         return (randint(self.low[0]+1, self.high[0]-1), self.high[1])
 
+    def checkRoomSize(self):
+        xLength = (self.high[0] - self.low[0]) + 1
+        yLength = (self.high[1] - self.low[1]) + 1
+        return xLength*yLength
+
     def generateKeywords(self, dungeonType):
         ''' Generates the keywords for describing the room'''
         self.generateFloor(dungeonType)
@@ -149,7 +154,7 @@ class Room:
             # Don't give forests artificial walls
             self.wall = walls[randint(0, 1)]
         else:
-            self.wall = walls[randint(0, len(walls)-1)]
+            self.wall = walls[randint(2, len(walls)-1)]
 
     def generateDoor(self, dungeonType):
         ''' Determine if there is a door in the room and its features'''

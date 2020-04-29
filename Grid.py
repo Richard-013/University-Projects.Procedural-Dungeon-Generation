@@ -101,10 +101,10 @@ class Grid:
                     self.gridCells[x][y].down = self.gridCells[x][y-1]
                     self.gridCells[x][y].neighbourList[3] = self.gridCells[x][y].down
 
-    def createMap(self, maxArea, minDimension, dungeonType):
+    def createMap(self, maxArea, minDimension, dungeonType, output):
         ''' Creates a map and creates it within the grid'''
         # Generate the map
-        self.theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension, dungeonType)
+        self.theMap = Map.Map(self.ySize, self.ySize, maxArea, minDimension, dungeonType, output)
 
         # Label the room tiles on the map with the appropriate type
         for curRegion in self.theMap.regions:
@@ -147,6 +147,7 @@ class Grid:
 
         # Draw grid on the screen
         self.drawMap()
+        #print(self.path)
 
     def connectRooms(self):
         ''' Creates corridors between the rooms that were generated'''
@@ -173,6 +174,10 @@ class Grid:
                         nearestRoom = nextRegion.room
                         distToNearest = dist
 
+            if nearestRoom is None:
+                # If there is no room to connect to, do not attempt to connect any rooms
+                continue
+
             navigator = AStar.AStar(self, currentRegion.room.exit, nearestRoom.entrance)
             # Find the path between the two points
             path = navigator.findPath()
@@ -180,7 +185,7 @@ class Grid:
                 # If a path was found, store it
                 self.corridors.append(path)
                 # Mark the room as connected
-                connectedRooms.append(currentRegion)
+                connectedRooms.append(currentRegion.room)
 
             # Memory clean up
             del navigator
@@ -264,7 +269,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     pygame.display.set_caption("Grid Test")
     gridA = Grid(100, 100, screen, True)
-    gridA.createMap(1000, 15, "Ruin")
+    gridA.createMap(1000, 15, "Ruin", None)
     #gridA.connectRooms()
     #print(gridA.corridors)
 

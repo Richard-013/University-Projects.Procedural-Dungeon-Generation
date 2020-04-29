@@ -10,7 +10,7 @@ class Map:
     ''' Class for generating the overall map of the dungeon
         Takes xSize and ySize as positive integers to define size of the map
         Takes maxArea as a positive integer to set the maximum size of any one room'''
-    def __init__(self, xSize, ySize, maxArea, minDimension, dungeonType):
+    def __init__(self, xSize, ySize, maxArea, minDimension, dungeonType, outputName):
         self.xSize = xSize
         self.ySize = ySize
         self.maxRegionArea = maxArea
@@ -19,6 +19,7 @@ class Map:
         self.start = Region.Region(0, self.xSize-2, 0, self.ySize-2, self.maxRegionArea, self.minDimension)
         self.regions = []
         self.region = None
+        self.OUTPUT_FILE_NAME = outputName
         self.getUsableRegions()
         self.createRooms()
 
@@ -60,13 +61,19 @@ class Map:
             currentRegion.room = Room(currentRegion.lowPoint, currentRegion.highPoint, self.minDimension, name)
             k = k + 1
 
+        #roomsOverSpec = 0
         for currentRegion in self.regions:
             currentRegion.room.generateKeywords(self.dungeonType)
             self.outputKeywords(currentRegion.room)
+            #if currentRegion.room.checkRoomSize() > self.maxRegionArea:
+                #roomsOverSpec = roomsOverSpec + 1
+
+        #print(str(100 - (roomsOverSpec/len(self.regions))*100) + " %") 
+            
 
     def outputKeywords(self, room):
         ''' Outputs the keywords and descriptions for each room to a file'''
-        outputFile = open(OUTPUT_FILE_NAME, 'a')
+        outputFile = open(self.OUTPUT_FILE_NAME, 'a')
         outputFile.write("Room: " + room.name)
         outputFile.write("\n")
         outputFile.write("---------------------------------------------------")
@@ -114,7 +121,7 @@ class Map:
         outputFile.close()
 
 if __name__ == "__main__":
-    theMap = Map(100, 100, 200, 10, "Ruin")
+    theMap = Map(100, 100, 200, 10, "Ruin", None)
     #0, 10, 0, 5, 33
     print(theMap.start)
     #theMap.createRegions()
