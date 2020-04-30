@@ -98,7 +98,7 @@ class Map:
             outputFile.write("Door: Room does not have a Door")
             outputFile.write("\n")
 
-        outputFile.write("Inahbited: " + room.inhabited)
+        outputFile.write("Inhabited: " + room.inhabited)
         outputFile.write("\n")
         outputFile.write("Occupied: " + room.occupied)
         outputFile.write("\n")
