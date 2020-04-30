@@ -104,9 +104,3 @@ class Region:
                     return 1
                 self.subRegionLeft = Region(self.lowPoint[0], self.highPoint[0], self.lowPoint[1], splitPoint, self.maxArea, self.minDimension)
                 self.subRegionRight = Region(self.lowPoint[0], self.highPoint[0], splitPoint+1, self.highPoint[1], self.maxArea, self.minDimension)
-
-if __name__ == "__main__":
-    region = Region(0, 50, 0, 50, 500, 5)
-    region.createSubRegions()
-    print(region.subRegionLeft)
-    print(region.subRegionRight)

@@ -119,15 +119,3 @@ class Map:
         outputFile.write("Corridor Description: " + room.corridorDescriptor)
         outputFile.write("\n\n")
         outputFile.close()
-
-if __name__ == "__main__":
-    theMap = Map(100, 100, 200, 10, "Ruin", None)
-    #0, 10, 0, 5, 33
-    print(theMap.start)
-    #theMap.createRegions()
-    #theMap.getUsableRegions()
-    for region in theMap.regions:
-        #region.room = Room(region.lowPoint, region.highPoint, 10)
-        #print((region.room.low, region.room.high))
-        theMap.outputKeywords(region.room)
-    #print(len(theMap.regions))

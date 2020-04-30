@@ -283,11 +283,3 @@ class Room:
             self.enemyDifficulty = difficulties[3]
         else:
             self.enemyDifficulty = difficulties[4]
-
-if __name__ == "__main__":
-    room = Room((0, 0), (20, 20), 4, "A")
-    room.generateRoom()
-    print(room.low)
-    print(room.high)
-    print(room.entrance)
-    print(room.exit)

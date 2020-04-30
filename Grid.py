@@ -261,21 +261,3 @@ class Grid:
                 if roomText is not None:
                     roomNameRect = roomText.get_rect(center=(renderedCell.left, renderedCell.top))
                     self.screen.blit(roomText, roomNameRect)
-
-
-if __name__ == "__main__":
-    pygame.init()
-    screen = pygame.display.set_mode(WIN_SIZE)
-    clock = pygame.time.Clock()
-    pygame.display.set_caption("Grid Test")
-    gridA = Grid(100, 100, screen, True)
-    gridA.createMap(1000, 15, "Ruin", None)
-    #gridA.connectRooms()
-    #print(gridA.corridors)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        pygame.display.update()
